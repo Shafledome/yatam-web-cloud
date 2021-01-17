@@ -5,4 +5,4 @@ dnspython
 python-dotenv
 requests
 google-auth
-flask-cors 
+flask-cors

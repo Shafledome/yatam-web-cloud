@@ -1,0 +1,55 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="hero is-fullheight is-primary">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-8 is-offset-2">
+                <h3 class="title has-text-white">YATAM - Login</h3>
+                <hr class="login-hr"><p class="subtitle has-text-white">Please login to enter the app</p>
+                <div class="box">
+                    <div class="title has-text-grey is-5">Please use Google Auth to enter.</div>
+                    <button class="button is-danger is-block is-large is-fullwidth" onclick="signIn()">
+                        <p><i class="fab fa-google"></i>&nbsp;&nbsp;Sign In With Google</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var firebaseConfig = {
+    apiKey: "AIzaSyBpwKSbQuoHtaoqFnkEXMYQZRl2cnYoDos",
+    authDomain: "pruebacloudweb2021-57ef4.firebaseapp.com",
+    projectId: "pruebacloudweb2021-57ef4",
+    storageBucket: "pruebacloudweb2021-57ef4.appspot.com",
+    messagingSenderId: "132935806651",
+    appId: "1:132935806651:web:6516e0241bee0b938c039e",
+    measurementId: "G-C2P78NJLTZ"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().languageCode = 'es';
+
+    function signIn() {
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+            var token = result.credential.accessToken;
+            var user = result.user;
+            if (user) {
+                var request = new XMLHttpRequest();
+                request.onreadystatechange = () => {
+                    if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+                        window.location.href = "/home/";
+                    }
+                }
+                request.open('POST', '/login/', true);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+                request.setRequestHeader('Access-Control-Allow-Origin', '*');
+                request.send('email=' + user.email + '&uid=' + user.uid);
+            }
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+</script>
+{% endblock %}
