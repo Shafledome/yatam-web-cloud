@@ -1,0 +1,8 @@
+gunicorn
+flask
+pyrebase4
+dnspython
+python-dotenv
+requests
+google-auth
+flask-cors 
