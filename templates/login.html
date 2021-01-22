@@ -3,11 +3,12 @@
 <div class="hero is-fullheight is-primary">
     <div class="hero-body">
         <div class="container has-text-centered">
+            <h1 class="title is-1">Welcome to YATAM!</h1>
             <div class="column is-8 is-offset-2">
-                <h3 class="title has-text-white">YATAM - Login</h3>
+                <h3 class="title has-text-white">Login</h3>
                 <hr class="login-hr"><p class="subtitle has-text-white">Please login to enter the app</p>
                 <div class="box">
-                    <div class="title has-text-grey is-5">Please use Google Auth to enter.</div>
+                    <div class="title has-text-grey is-5">You have to use Google Authentication to enter.</div>
                     <button class="button is-danger is-block is-large is-fullwidth" onclick="signIn()">
                         <p><i class="fab fa-google"></i>&nbsp;&nbsp;Sign In With Google</p>
                     </button>
@@ -38,14 +39,14 @@
             if (user) {
                 var request = new XMLHttpRequest();
                 request.onreadystatechange = () => {
-                    if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+                    if (this.status == 200) {
                         window.location.href = "/home/";
                     }
-                }
-                request.open('POST', '/login/', true);
+                };
+                request.open('POST', '/', true);
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
                 request.setRequestHeader('Access-Control-Allow-Origin', '*');
-                request.send('email=' + user.email + '&uid=' + user.uid);
+                request.send(`email=${user.email}&uid=${user.uid}&displayName=${user.displayName}&profilePicture=${user.photoURL}`);
             }
         }).catch(function(error) {
             console.log(error);

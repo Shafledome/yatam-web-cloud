@@ -46,7 +46,7 @@ class Graffiti:
             'url': url,
             'user': user
         }
-        db.create(Graffiti.entry, data)
+        db.create(Graffiti.entry + '/' + new_key, data)
         return Graffiti(key=new_key, description=description, n_likes=0, url=url, user=user)
 
     @staticmethod

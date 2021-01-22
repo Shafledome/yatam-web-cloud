@@ -33,7 +33,7 @@ class User:
                 'displayName': display_name,
                 'profilePicture': profile_picture
             }
-            db.create(User.entry, data)
+            db.create(User.entry + '/' + uid, data)
             return User(email=email, uid=uid, display_name=display_name, profile_picture=profile_picture)
         else:
             return None

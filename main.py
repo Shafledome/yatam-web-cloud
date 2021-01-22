@@ -19,27 +19,26 @@ mimetype = 'application/json'
 current_user = None
 
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
 def start():
+    if request.method == 'POST':
+        email = request.form['email']
+        uid = request.form['uid']
+        display_name = request.form['displayName']
+        profile_picture = request.form['profilePicture']
+        user = User.get_by_uid(uid)
+        if user is None:
+            user = User.create_user(uid, email, display_name, profile_picture)
+        current_user = user
+        return Response(response=json.dumps('Status 200. User logged in.'), mimetype=mimetype, status=200)
     return render_template('login.html')
-
-
-@app.route('/login/', methods=['POST'])
-def login():
-    uid = request.form['uid']
-    email = request.form['email']
-    display_name = request.form['displayName']
-    profile_picture = request.form['profilePicture']
-    user = User.get_by_uid(uid)
-    if user is None:
-        user = User.create_user(uid, email, display_name, profile_picture)
-    current_user = user
-    return Response(json.dumps('Status 200. User logged in.'), mimetype=mimetype, status=200)
 
 
 @app.route('/home/', methods=['GET'])
 def show_home():
     return render_template('home.html')
+
+# LEISURES - GET
 
 
 if __name__ == '__main__':
