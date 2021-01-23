@@ -39,8 +39,8 @@
             if (user) {
                 var request = new XMLHttpRequest();
                 request.onreadystatechange = () => {
-                    if (this.status == 200) {
-                        window.location.href = "/home/";
+                    if (request.status == 200) {
+                        window.location.href = '/home/';
                     }
                 };
                 request.open('POST', '/', true);

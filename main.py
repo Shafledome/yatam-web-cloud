@@ -29,9 +29,11 @@ def start():
         user = User.get_by_uid(uid)
         if user is None:
             user = User.create_user(uid, email, display_name, profile_picture)
+        global current_user
         current_user = user
-        return Response(response=json.dumps('Status 200. User logged in.'), mimetype=mimetype, status=200)
-    return render_template('login.html')
+        return json.dumps({'status': 'OK'})
+    else:
+        return render_template('login.html')
 
 
 @app.route('/home/', methods=['GET'])
