@@ -20,6 +20,9 @@ class Leisure:
         self.schedule = schedule
         self.coordinates = coordinates
 
+    def encode(self):
+        return self.__dict__
+
     def get_all(self):
         result = []
         leisures = opendata.parse_json_data(self.leisure_type)

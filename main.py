@@ -18,7 +18,6 @@ mimetype = 'application/json'
 
 current_user = None
 
-
 @app.route('/', methods=['GET', 'POST'])
 def start():
     if request.method == 'POST':
@@ -39,6 +38,19 @@ def start():
 @app.route('/home/', methods=['GET'])
 def show_home():
     return render_template('home.html')
+
+
+@app.route('/map', methods=['GET', 'POST'])
+def show_map():
+    if request.method == 'POST':
+        req = request.get_json()
+        leisures = Leisure(req).get_all()
+        return Response(response=json.dumps(leisures, default=lambda o: o.encode(), indent=4),
+                        status=200,
+                        mimetype='application/json')
+    else:
+        return render_template('map.html')
+
 
 # LEISURES - GET
 

@@ -1,0 +1,93 @@
+{% extends 'base.html'%}
+{% block content %}
+
+<div class="control">
+  <label class="radio">
+    <input type="radio" name="leisures" value="MUSEUM">
+    Museums
+  </label>
+  <label class="radio">
+    <input type="radio" name="leisures" value="DOGPARK">
+    Dog Parks
+  </label>
+  <label class="radio">
+    <input type="radio" name="leisures" value="ARTGALLERY">
+    Art Gallery
+  </label>
+    <label class="radio">
+    <input type="radio" name="leisures" value="MONUMENT">
+    Monument
+  </label>
+    <label class="radio">
+    <input type="radio" name="leisures" value="TRAINING">
+    Training
+  </label>
+    <label class="radio">
+    <input type="radio" name="leisures" value="LIBRARY">
+    Library
+  </label>
+    <label class="radio">
+    <input type="radio" name="leisures" value="CINEMA">
+    Cinema
+  </label>
+    <label class="radio">
+    <input type="radio" name="leisures" value="THEATER">
+    Theater
+  </label>
+    <label class="radio">
+    <input type="radio" name="leisures" value="USERLEISURE">
+    Users Leisures
+  </label>
+</div>
+<button class="btn btn-primary" onclick="get_leisures()">Filtrar</button>
+
+  </form>
+<div id="contenedor">
+
+</div>
+<script>
+  function mostrarDatos(data) {
+    var contenedor = document.getElementById('contenedor');
+    contenedor.innerHTML='';
+    data.map((leisure, i) =>{
+      let contenido = document.createElement('p')
+      contenido.innerHTML = leisure.name;
+      contenedor.appendChild(contenido);
+
+    })
+  }
+
+  function get_leisures(){
+        var leisure = document.getElementsByName("leisures");
+        var result;
+        for (i = 0; i<leisure.length; i++){
+            if(leisure[i].checked){
+                result = leisure[i].value;
+            }
+        }
+        if(result==undefined){
+            window.location.href('/map');
+        }else{
+            fetch(`${window.origin}/map`,{
+                method: "POST",
+                body: JSON.stringify(result),
+                cache: "no-cache",
+                headers: new Headers({
+                    "content-type": "application/json"
+                })
+            })
+            .then(function (response){
+                if(response.status!== 200){
+                    console.log(`Response status was not 200 ${response.status}`);
+                    return ;
+                }
+                response.json().then(function (data){
+                  mostrarDatos(data);
+                })
+            })
+        }
+    }
+</script>
+{{if }}
+{% endblock %}
+
