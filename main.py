@@ -52,6 +52,11 @@ def show_map():
         return render_template('map.html')
 
 
+@app.route('/leisure', methods=['GET'])
+def show_leisure():
+    idLeisure = request.args.get('id')
+    print(idLeisure)
+    return render_template('leisure.html', id=idLeisure)
 # LEISURES - GET
 
 

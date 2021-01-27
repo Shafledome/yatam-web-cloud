@@ -42,17 +42,122 @@
 <button class="btn btn-primary" onclick="get_leisures()">Filtrar</button>
 
   </form>
-<div id="contenedor">
 
+<div id="map" style="height: 800px">
 </div>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+
 <script>
+
+
+  //Declaración del mapa
+
+  var map = L.map('map').setView([36.72, -4.42], 13);
+  var markers = new Array();
+  L.tileLayer(`https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png`, {
+
+  }).addTo(map);
+
+  //Creacion de iconos
+ function getType(leisure){
+    tipo = leisure.leisure_type;
+    let iconType = L.icon({
+      iconUrl: 'static/museum.svg',
+      iconSize:[30,30],
+      iconAnchor: [15,30]
+    })
+    switch(tipo){
+      case "DOGPARK":
+        iconType =  L.icon({
+          iconUrl: 'static/dogPark.svg',
+          iconSize:[30,30],
+          iconAnchor: [15,30]
+        })
+        break;
+      case "ARTGALLERY":
+        iconType =  L.icon({
+          iconUrl: 'static/artGallery.svg',
+          iconSize:[30,30],
+          iconAnchor: [15,30]
+        })
+        break;
+      case "CINEMA":
+        iconType =  L.icon({
+          iconUrl: 'static/cinema.svg',
+          iconSize:[30,30],
+          iconAnchor: [15,30]
+        })
+        break;
+      case "LIBRARY":
+        iconType =  L.icon({
+          iconUrl: 'static/library.svg',
+          iconSize:[30,30],
+          iconAnchor: [15,30]
+        })
+        break;
+      case "MONUMENT":
+        iconType =  L.icon({
+          iconUrl: 'static/monument.svg',
+          iconSize:[30,30],
+          iconAnchor: [15,30]
+        })
+        break;
+      case "THEATER":
+        iconType =  L.icon({
+          iconUrl: 'static/theater.svg',
+          iconSize:[30,30],
+          iconAnchor: [15,30]
+        })
+        break;
+      case "TRAINING":
+        iconType =  L.icon({
+          iconUrl: 'static/training.svg',
+          iconSize:[30,30],
+          iconAnchor: [15,30]
+        })
+        break;
+      case "USERLEISURE":
+        iconType =  L.icon({
+          iconUrl: 'static/Map-Pointer.svg',
+          iconSize:[30,30],
+          iconAnchor: [15,30]
+        });
+        break;
+      default:
+        break;
+    }
+    return iconType;
+
+  }
+
+  //Redireccion a info del Leisure
+  function infoLeisure(id){
+   return "/leisure?id="+id;
+  }
+
+
+  //Función actualizar mapa
+
+  function deleteMarkers(){
+    for(i = 0; i<markers.length;i++){
+      map.removeLayer(markers[i]);
+    }
+  }
+
+
+
   function mostrarDatos(data) {
-    var contenedor = document.getElementById('contenedor');
-    contenedor.innerHTML='';
+    deleteMarkers();
     data.map((leisure, i) =>{
-      let contenido = document.createElement('p')
-      contenido.innerHTML = leisure.name;
-      contenedor.appendChild(contenido);
+      iconType = getType(leisure);
+      var LamMarker = new L.marker(leisure.coordinates, {icon:iconType},{alt: infoLeisure(leisure.l_id)});
+      markers.push(LamMarker);
+      LamMarker.addTo(map);
+      LamMarker.on('click',function (){
+        window.location.href = infoLeisure(leisure.l_id);
+      });
 
     })
   }
@@ -88,6 +193,5 @@
         }
     }
 </script>
-{{if }}
 {% endblock %}
 
