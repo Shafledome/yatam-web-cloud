@@ -1,0 +1,102 @@
+{% extends 'base.html'%}
+{% block content %}
+<h1>
+    Create your own Leisure
+</h1>
+
+<br/>
+<div class="field">
+  <label class="label">Name</label>
+  <div class="control">
+    <input class="input" id="name" type="text" placeholder="Name">
+  </div>
+</div>
+<div class="field">
+  <div class="control">
+    <input id="user" type="hidden" value={{user.u_id}}>
+  </div>
+</div>
+<div class="field">
+  <label class="label">Coordinates</label>
+  <div class="control">
+    <input class="input" id="coordinates" type="text" placeholder="[x,y]">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Photo</label>
+  <div class="control">
+    <input id="photo" type="file" accept=".jpg,.png,.svg">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Schedule</label>
+  <div class="control">
+    <input class="input" id="schedule" type="text" placeholder="Schedule">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Address</label>
+  <div class="control">
+    <input class="input" id="address" type="text" placeholder="Address">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Description</label>
+  <div class="control">
+    <textarea class="textarea" id="description" placeholder="Description"></textarea>
+  </div>
+</div>
+
+<div class="field is-grouped">
+  <div class="control">
+    <button class="button is-link" onclick=crearLeisure()>Submit</button>
+  </div>
+  <div class="control">
+    <button class="button is-link is-light">Cancel</button>
+  </div>
+</div>
+
+<script>
+  var photo = document.getElementById("photo");
+  var url_photo=""
+  photo.addEventListener("change", ev => {
+            const formData = new FormData();
+            formData.append("image", ev.target.files[0]);
+            fetch("https://api.imgur.com/3/image/",{
+              method:"post",
+              headers:{
+                Authorization:"Client-ID 812e393caa20a49"
+            },
+              body: formData
+          }).then(data=>data.json()).then(data =>{
+            url_photo = data.data.link;
+          })
+          });
+    function crearLeisure(){
+        var name = document.getElementById("name");
+        var address = document.getElementById("address");
+        var user = document.getElementById("user");
+        var coordinates = document.getElementById("coordinates");
+        var description = document.getElementById("description");
+        var schedule = document.getElementById("schedule");
+        if(name.value !== "" && address.value!=="" && coordinates.value!==""
+        && url_photo!=""){
+                var request = new XMLHttpRequest();
+                request.onreadystatechange = () => {
+                    if (request.status == 200) {
+                        window.location.href = '/leisure?id='+url_photo;
+                    }
+                };
+                request.open('POST', '/leisure/create/', true);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+                request.setRequestHeader('Access-Control-Allow-Origin', '*');
+                request.send(`name=${name.value}&user=${user.uid}&coordinates=${coordinates.value}&description=${description.value}&photo=${url_photo}&schedule=${schedule.value}&address=${address.value}`);
+        }
+    }
+</script>
+
+{% endblock %}

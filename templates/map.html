@@ -134,7 +134,7 @@
 
   //Redireccion a info del Leisure
   function infoLeisure(id){
-   return "/leisure?id="+id;
+   return "/leisure/?id="+id;
   }
 
 
@@ -171,7 +171,7 @@
             }
         }
         if(result==undefined){
-            window.location.href('/map');
+            window.location.href('/map/');
         }else{
             fetch(`${window.origin}/map`,{
                 method: "POST",

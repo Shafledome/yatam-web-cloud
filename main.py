@@ -6,6 +6,7 @@ from entities.event_entity import Event
 from entities.graffity_entity import Graffiti
 from entities.leisure_entity import Leisure
 from entities.rating_entity import Rating
+from entities.user_leisure_entity import UserLeisure
 
 import json
 
@@ -40,7 +41,7 @@ def show_home():
     return render_template('home.html')
 
 
-@app.route('/map', methods=['GET', 'POST'])
+@app.route('/map/', methods=['GET', 'POST'])
 def show_map():
     if request.method == 'POST':
         req = request.get_json()
@@ -52,11 +53,28 @@ def show_map():
         return render_template('map.html')
 
 
-@app.route('/leisure', methods=['GET'])
+@app.route('/leisure/', methods=['GET'])
 def show_leisure():
     idLeisure = request.args.get('id')
     print(idLeisure)
     return render_template('leisure.html', id=idLeisure)
+
+
+@app.route('/leisure/create/', methods=['GET', 'POST'])
+def create_leisure():
+    if request.method == 'GET':
+        return render_template('create_leisure.html', user=current_user)
+    elif request.method == 'POST':
+        name = request.form['name']
+        coordinates = request.form['coordinates']
+        description = request.form['description']
+        photo = request.form['photo']
+        schedule = request.form['schedule']
+        address = request.form['address']
+        UserLeisure.create_user_leisure()
+
+
+        return Response({'status': 'OK'})
 # LEISURES - GET
 
 
