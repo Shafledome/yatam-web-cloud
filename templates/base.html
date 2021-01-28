@@ -2,17 +2,98 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>YATAM</title>
+    <title> {{ title }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-   crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-{% block content %}
-{% endblock %}
+    {% if logged %}
+    <div class="hero-head">
+        <div class="columns is-centered">
+            <div class="column">
+                <nav class="navbar" role="navigation" aria-label="main navigation">
+                    <div id="navbarBasic" class="navbar-menu">
+                        <div class="navbar-start">
+                            <div class="navbar-item">
+                                <a class="button is-danger is-block is-rounded" onclick="signOut()">
+                                    <p><i class="fab fa-google"></i>&nbsp;&nbsp;Sign Out</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="navbar-item">
+                            <h1 class="is-large"><b>YATAM</b></h1>
+                        </div>
+                        <div class="navbar-end">
+                            <div class="navbar-item">
+                                <a class="button is-rounded has-text-grey" href="/home/">Home</a>
+                            </div>
+                            <div class="navbar-item">
+                                <a class="button is-primary is-rounded" href="">
+                                    <strong>Profile</strong>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+    <div class="hero-foot">
+        <footer style="border-top: 1px solid hsl(0, 0%, 93%); padding-top: 1.7rem;">
+            <div class="container">
+                <div class="columns is-vcentered is-centered has-text-centered-mobile">
+                    <div class="column is-narrow">
+                        <strong>YATAM</strong>
+                    </div>
+                    <div class="column is-3">
+                        <h5 class="title is-5 has-text-grey-light has-text-weight-normal is-italic">
+                            Another Tourism App Malaga for differents landmarks in M&aacute;laga
+                        </h5>
+                    </div>
+                    <div class="column is-4 is-narrow">
+                        &copy; 2021 <p class="has-text-grey-darker">Grupo B3</p> Ingenier&iacute;a Web.
+                        <br>
+                        <i>Todos los derechos reservados.</i>
+                    </div>
+                    <div class="column is-narrow">
+                        Sitemap
+                        <ul>
+                            <li><a class="has-text-grey" href="">Github Cloud</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
 </body>
+    <script>
+        var firebaseConfig = {
+        apiKey: "AIzaSyBpwKSbQuoHtaoqFnkEXMYQZRl2cnYoDos",
+        authDomain: "pruebacloudweb2021-57ef4.firebaseapp.com",
+        projectId: "pruebacloudweb2021-57ef4",
+        storageBucket: "pruebacloudweb2021-57ef4.appspot.com",
+        messagingSenderId: "132935806651",
+        appId: "1:132935806651:web:6516e0241bee0b938c039e",
+        measurementId: "G-C2P78NJLTZ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.auth().languageCode = 'es';
+        function signOut() {
+            firebase.auth().signOut().then(function() {
+                window.location.href = '/';
+            }).catch(function(error) {
+                console.log(error);
+            });
+        }
+    </script>
 </html>
