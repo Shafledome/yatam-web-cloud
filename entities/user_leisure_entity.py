@@ -59,7 +59,7 @@ class UserLeisure:
             'coordinates': coordinates,
             'user': user
         }
-        db.create(UserLeisure.entry, data)
+        db.create(UserLeisure.entry + '/' + new_key, data)
         return UserLeisure(key=new_key, description=description, name=name, address=address, url_photo=url_photo,
                            schedule=schedule, coordinates=coordinates, user=user)
 

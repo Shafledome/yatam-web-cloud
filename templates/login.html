@@ -14,23 +14,11 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div>  
     </div>
 </div>
 <script>
-    var firebaseConfig = {
-    apiKey: "AIzaSyBpwKSbQuoHtaoqFnkEXMYQZRl2cnYoDos",
-    authDomain: "pruebacloudweb2021-57ef4.firebaseapp.com",
-    projectId: "pruebacloudweb2021-57ef4",
-    storageBucket: "pruebacloudweb2021-57ef4.appspot.com",
-    messagingSenderId: "132935806651",
-    appId: "1:132935806651:web:6516e0241bee0b938c039e",
-    measurementId: "G-C2P78NJLTZ"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
     var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().languageCode = 'es';
 
     function signIn() {
         firebase.auth().signInWithPopup(provider).then(function(result) {

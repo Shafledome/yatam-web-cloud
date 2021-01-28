@@ -1,11 +1,174 @@
 {% extends 'base.html'%}
 {% block content %}
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <button class="button is-danger is-block is-large is-fullwidth" onclick="">
-        <p><i class="fab fa-google"></i>&nbsp;&nbsp;Sign Out</p>
-    </button>
-  </div>
-</nav>
+<div class="hero is-fullheight is-primary">
+    <div class="hero-head">
+        <div class="block"></div>
+        <div class="block">
+            <div class="column is-three-fifths is-offset-one-fifth">
+                <div class="box">
+                    <div class="tabs is-boxed is-fullwidth">
+                        <ul>
+                            <li>
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-landmark" aria-hidden="true"></i></span>
+                                    <span>YATAM - Leisures</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-monument" aria-hidden="true"></i></span>
+                                    <span>Leisures from Users</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-spray-can" aria-hidden="true"></i></span>
+                                    <span>Graffities</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-map-signs" aria-hidden="true"></i></span>
+                                    <span>Leisures Map</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                                    <span>Events 2020</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block"></div>
+    <div class="columns">
+        <div class="column is-2 is-offset-1">
+            <div class="box">
+                <aside class="menu">
+                    <p class="menu-label">
+                      Types of Leisures
+                    </p>
+                    <ul class="menu-list">
+                      <li><a onclick="change_leisure_type('MUSEUM')">Museums</a></li>
+                      <li><a onclick="change_leisure_type('ARTGALLERY')">Art Galleries</a></li>
+                      <li><a onclick="change_leisure_type('DOGPARK')">Dog Parks</a></li>
+                      <li><a onclick="change_leisure_type('MONUMENT')">Monuments</a></li>
+                      <li><a onclick="change_leisure_type('TRAINING')">Training Parks</a></li>
+                      <li><a onclick="change_leisure_type('LIBRARY')">Libraries</a></li>
+                      <li><a onclick="change_leisure_type('CINEMA')">Cinemas</a></li>
+                      <li><a onclick="change_leisure_type('THEATER')">Theaters</a></li>
+                    </ul>
+                </aside>
+            </div>
+        </div>
+        <div class="column is-8">
+            <div class="box" id="mainBox">
+            </div>
+        </div>
+        <a class="button is-danger is-large" id="top_button"onclick="top_function()">To the Top</a>
+    </div>
+</div>
+<script>
+    window.onload = change_leisure_type('MUSEUM');
+    window.onscroll = () => {scroll_function();}
 
+    function scroll_function() {
+        var top_button = document.getElementById("top_button");
+
+        if (document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20) {
+            top_button.style.display = "block";
+        } else {
+            top_button.style.display = "none";
+        }
+    }
+
+    function top_function() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+    function change_leisure_type(type) {
+        fetch(`${window.origin}/home/`, {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify(type),
+            cache: 'no-cache',
+            headers: new Headers({
+                'content-type': 'application/json'
+            })
+        }).then((response) => {
+            if (response.status !== 200) {
+                console.log(`Response status was not 200: ${response.status}`);
+                return ;
+            }
+            response.json().then( (data) => {
+                render_cards(data);
+            })
+        })
+    }
+
+    function render_cards(data) {
+        var box = document.getElementById('mainBox');
+        box.innerHTML = '';
+
+        data.forEach(element => {
+            var string_html = `
+                <a><div class="card">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <h1 class="title is-2 has-text-grey-darker">
+                                        ${element.name}
+                                    </h1>
+                                </div>
+                            </div>
+                            <div class="content">
+            `;
+            if (element.description !== null) {
+                string_html = string_html.concat(`${element.description}`);
+            }
+            if (element.address !== null) {
+                string_html = string_html.concat(`
+                    <p><strong>Address: </strong> ${element.address} </p>
+                `);
+            }
+            if (element.url !== null) {
+                string_html = string_html.concat(`
+                    <p><strong>URL: </strong> ${element.url} </p>
+                `);
+            }
+            if (element.email !== null) {
+                string_html = string_html.concat(`
+                    <p><strong>Email: </strong> ${element.email} </p>
+                `);
+            }
+            if (element.schedule !== null) {
+                string_html = string_html.concat(`
+                    <p><strong>Schedule: </strong> ${element.schedule} </p>
+                `);
+            }
+            string_html = string_html.concat(`
+                            </div>
+                        </div>
+                    </div></a>
+                    <br>
+            `);
+            box.innerHTML += string_html;
+        });
+    }
+</script>
+<style>
+    #top_button {
+        display: none;
+        bottom: 20px;
+        right: 30px;
+        z-index: 99;
+        position: fixed;
+    }
+</style>
 {% endblock %}

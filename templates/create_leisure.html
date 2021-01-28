@@ -12,11 +12,6 @@
   </div>
 </div>
 <div class="field">
-  <div class="control">
-    <input id="user" type="hidden" value={{user.u_id}}>
-  </div>
-</div>
-<div class="field">
   <label class="label">Coordinates</label>
   <div class="control">
     <input class="input" id="coordinates" type="text" placeholder="[x,y]">
@@ -79,7 +74,6 @@
     function crearLeisure(){
         var name = document.getElementById("name");
         var address = document.getElementById("address");
-        var user = document.getElementById("user");
         var coordinates = document.getElementById("coordinates");
         var description = document.getElementById("description");
         var schedule = document.getElementById("schedule");
@@ -87,14 +81,15 @@
         && url_photo!=""){
                 var request = new XMLHttpRequest();
                 request.onreadystatechange = () => {
-                    if (request.status == 200) {
-                        window.location.href = '/leisure?id='+url_photo;
+                    if (request.readyState == XMLHttpRequest.DONE && request.status ==200) {
+                        var key = JSON.parse(request.response)['key'];
+                        window.location.href="/leisure/user/?key="+key;
                     }
                 };
                 request.open('POST', '/leisure/create/', true);
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
                 request.setRequestHeader('Access-Control-Allow-Origin', '*');
-                request.send(`name=${name.value}&user=${user.uid}&coordinates=${coordinates.value}&description=${description.value}&photo=${url_photo}&schedule=${schedule.value}&address=${address.value}`);
+                request.send(`name=${name.value}&coordinates=${coordinates.value}&description=${description.value}&photo=${url_photo}&schedule=${schedule.value}&address=${address.value}`);
         }
     }
 </script>
