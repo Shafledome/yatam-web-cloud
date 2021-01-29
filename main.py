@@ -104,8 +104,7 @@ def show_map():
                             mimetype=mimetype)
         else:
             return render_template('map.html', title='YATAM - Map')
-
-
+'''
 @app.route('/leisure', methods=['GET'])
 def show_leisure():
     if 'current_user_uid' not in session:
@@ -113,6 +112,44 @@ def show_leisure():
     else:
         idLeisure = request.args.get('id')
         return render_template('leisure.html', id=idLeisure)
+'''
+
+@app.route('/leisure', methods=['GET'])
+def show_leisure():
+    l_type = 'MUSEUM'
+    leisure = Leisure(l_type).get_by_id(710)
+    ratings = Rating.get_ratings_by_leisure('leisure', 710)
+    return render_template('leisure.html', l = leisure, ratings = ratings)
+
+
+@app.route('/saverating', methods=['GET', 'POST'])
+def save_rating():
+    if request.method == 'POST':
+        r_Id = request.form['id']
+        grade = int(request.form['grade'])
+        description = request.form['description']
+        l_Id = int(request.form['leisure'])
+        l_type = request.form['type']
+        user = session['current_user_uid']
+        if r_Id == 'null':
+            Rating.create_rating(grade, description, l_Id, user)
+        else:
+            data = {"grade": grade, "description": description}
+            Rating.update_rating(r_Id, data)
+        leisure = Leisure(l_type).get_by_id(l_Id)
+        ratings = Rating.get_ratings_by_leisure('leisure', l_Id)
+        return render_template('leisure.html', l = leisure, ratings = ratings)
+
+
+@app.route('/deleterating', methods=['GET', 'POST'])
+def delete_rating():
+    r_Id = request.form['id']
+    l_Id = int(request.form['leisure'])
+    l_type = request.form['type']
+    Rating.delete_rating(r_Id)
+    leisure = Leisure(l_type).get_by_id(l_Id)
+    ratings = Rating.get_ratings_by_leisure('leisure', l_Id)
+    return render_template('leisure.html', l = leisure, ratings = ratings)
 
 '''
 @app.route('/leisure/create', methods=['GET', 'POST'])
