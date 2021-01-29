@@ -16,7 +16,7 @@
         crossorigin=""></script>
 </head>
 <body>
-    {% if logged %}
+    {% if 'current_user_uid' in session %}
     <div class="hero-head">
         <div class="columns is-centered">
             <div class="column">
@@ -93,7 +93,7 @@
         firebase.auth().languageCode = 'es';
         function signOut() {
             firebase.auth().signOut().then(function() {
-                window.location.href = '/';
+                window.location.href = '/logout';
             }).catch(function(error) {
                 console.log(error);
             });

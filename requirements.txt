@@ -6,3 +6,4 @@ python-dotenv
 requests
 google-auth
 flask-cors
+Flask-Session
