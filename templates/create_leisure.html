@@ -83,10 +83,10 @@
                 request.onreadystatechange = () => {
                     if (request.readyState == XMLHttpRequest.DONE && request.status ==200) {
                         var key = JSON.parse(request.response)['key'];
-                        window.location.href="/leisure/user/?key="+key;
+                        window.location.href="/leisure/user?key="+key;
                     }
                 };
-                request.open('POST', '/leisure/create/', true);
+                request.open('POST', '/leisure/create', true);
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
                 request.setRequestHeader('Access-Control-Allow-Origin', '*');
                 request.send(`name=${name.value}&coordinates=${coordinates.value}&description=${description.value}&photo=${url_photo}&schedule=${schedule.value}&address=${address.value}`);

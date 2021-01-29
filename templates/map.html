@@ -1,58 +1,112 @@
 {% extends 'base.html'%}
 {% block content %}
 
-<div class="control">
-  <label class="radio">
-    <input type="radio" name="leisures" value="MUSEUM">
-    Museums
-  </label>
-  <label class="radio">
-    <input type="radio" name="leisures" value="DOGPARK">
-    Dog Parks
-  </label>
-  <label class="radio">
-    <input type="radio" name="leisures" value="ARTGALLERY">
-    Art Gallery
-  </label>
-    <label class="radio">
-    <input type="radio" name="leisures" value="MONUMENT">
-    Monument
-  </label>
-    <label class="radio">
-    <input type="radio" name="leisures" value="TRAINING">
-    Training
-  </label>
-    <label class="radio">
-    <input type="radio" name="leisures" value="LIBRARY">
-    Library
-  </label>
-    <label class="radio">
-    <input type="radio" name="leisures" value="CINEMA">
-    Cinema
-  </label>
-    <label class="radio">
-    <input type="radio" name="leisures" value="THEATER">
-    Theater
-  </label>
-    <label class="radio">
-    <input type="radio" name="leisures" value="USERLEISURE">
-    Users Leisures
-  </label>
+<div class="hero is-fullheight is-primary">
+  <div class="hero-head">
+    <div class="block"></div>
+    <div class="block">
+      <div class="column is-three-fifths is-offset-one-fifth">
+        <div class="box">
+          <div class="tabs is-boxed is-fullwidth">
+            <ul>
+              <li>
+                <a href="/home">
+                  <span class="icon is-small"><i class="fas fa-landmark" aria-hidden="true"></i></span>
+                    <span>YATAM - Leisures</span>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <span class="icon is-small"><i class="fas fa-monument" aria-hidden="true"></i></span>
+                  <span>Leisures from Users</span>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <span class="icon is-small"><i class="fas fa-spray-can" aria-hidden="true"></i></span>
+                  <span>Graffities</span>
+                </a>
+              </li>
+              <li>
+                <a href="/map">
+                  <span class="icon is-small"><i class="fas fa-map-signs" aria-hidden="true"></i></span>
+                  <span>Leisures Map</span>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                  <span>Events 2020</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="block"></div>
+  <div class="columns">
+    <div class="column is-2 is-offset-1">
+      <div class="box">
+        <aside class="menu">
+          <p class="menu-label">
+            Types of Leisures
+          </p>
+          <ul class="menu-list">
+            <li><label class="checkbox">
+              <input type="checkbox" name="leisures" value="MUSEUM">
+              Museums
+            </label></li>
+            <li><label class="checkbox">
+              <input type="checkbox" name="leisures" value="ARTGALLERY">
+              Art Galleries
+            </label></li>
+            <li><label class="checkbox">
+              <input type="checkbox" name="leisures" value="DOGPARK">
+              Dog Parks
+            </label></li>
+            <li><label class="checkbox">
+              <input type="checkbox" name="leisures" value="MONUMENT">
+              Monuments
+            </label></li>
+            <li><label class="checkbox">
+              <input type="checkbox" name="leisures" value="TRAINING">
+              Training Parks
+            </label></li>
+            <li><label class="checkbox">
+              <input type="checkbox" name="leisures" value="LIBRARY">
+              Libraries
+            </label></li>
+            <li><label class="checkbox">
+              <input type="checkbox" name="leisures" value="CINEMA">
+              Cinemas
+            </label></li>
+            <li><label class="checkbox">
+              <input type="checkbox" name="leisures" value="THEATER">
+              Theater
+            </label></li>
+            <li><label class="checkbox">
+              <input type="checkbox" name="leisures" value="USERLEISURE">
+              Users Leisures
+            </label></li>
+          </ul>
+          <br>
+          <a class="button is-primary" onclick="getLeisure()">Show Leisures</a>
+        </aside>
+      </div>
+    </div>
+    <div class="column is-8">
+      <div class="box">
+        <div id="map" style="height: 800px"></div>
+      </div>
+    </div>
+  </div>
+  <br><br>
 </div>
-<button class="btn btn-primary" onclick="get_leisures()">Filtrar</button>
-
-  </form>
-
-<div id="map" style="height: 800px">
-</div>
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-   crossorigin=""></script>
 
 <script>
-
-
-  //Declaración del mapa
+  // Map declaration
 
   var map = L.map('map').setView([36.72, -4.42], 13);
   var markers = new Array();
@@ -60,8 +114,8 @@
 
   }).addTo(map);
 
-  //Creacion de iconos
- function getType(leisure){
+  // Icons creation
+  function getType(leisure) {
     tipo = leisure.leisure_type;
     let iconType = L.icon({
       iconUrl: 'static/museum.svg',
@@ -85,7 +139,7 @@
         break;
       case "CINEMA":
         iconType =  L.icon({
-          iconUrl: 'static/cinema.svg',
+          iconUrl: './static/cinema.svg',
           iconSize:[30,30],
           iconAnchor: [15,30]
         })
@@ -132,13 +186,12 @@
 
   }
 
-  //Redireccion a info del Leisure
+  // Redirect to infoLeisure
   function infoLeisure(id){
-   return "/leisure/?id="+id;
+   return "/leisure?id="+id;
   }
 
-
-  //Función actualizar mapa
+  // Update Map
 
   function deleteMarkers(){
     for(i = 0; i<markers.length;i++){
@@ -146,10 +199,7 @@
     }
   }
 
-
-
   function mostrarDatos(data) {
-    deleteMarkers();
     data.map((leisure, i) =>{
       iconType = getType(leisure);
       var LamMarker = new L.marker(leisure.coordinates, {icon:iconType},{alt: infoLeisure(leisure.l_id)});
@@ -162,17 +212,26 @@
     })
   }
 
-  function get_leisures(){
+  function getLeisure(type){
         var leisure = document.getElementsByName("leisures");
-        var result;
-        for (i = 0; i<leisure.length; i++){
-            if(leisure[i].checked){
-                result = leisure[i].value;
+        var result = [];
+        var j = 0;
+        for (i = 0; i<leisure.length; i++) {
+            if (leisure[i].checked) {
+                result[j] = leisure[i].value;
+                j++;
             }
         }
-        if(result==undefined){
-            window.location.href('/map/');
-        }else{
+        deleteMarkers();
+        for (i = 0; i < result.length; i++) {
+          fetchData(result[i]);
+        }
+  }
+
+  function fetchData(result) {
+    if (result.lenght == 0) {
+            window.location.href('/map');
+        } else {
             fetch(`${window.origin}/map`,{
                 method: "POST",
                 body: JSON.stringify(result),
@@ -180,9 +239,8 @@
                 headers: new Headers({
                     "content-type": "application/json"
                 })
-            })
-            .then(function (response){
-                if(response.status!== 200){
+            }).then(function (response){
+                if (response.status!== 200) {
                     console.log(`Response status was not 200 ${response.status}`);
                     return ;
                 }
@@ -191,7 +249,6 @@
                 })
             })
         }
-    }
+  }
 </script>
 {% endblock %}
-

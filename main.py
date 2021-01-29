@@ -41,7 +41,7 @@ def start():
         return render_template('login.html', title='YATAM - Login', logged=logged)
 
 
-@app.route('/home/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
 def show_home():
     if request.method == 'POST':
         req = request.get_json()
@@ -53,7 +53,7 @@ def show_home():
         return render_template('home.html', title='YATAM - Home', logged=logged)
 
 
-@app.route('/map/', methods=['GET', 'POST'])
+@app.route('/map', methods=['GET', 'POST'])
 def show_map():
     if request.method == 'POST':
         req = request.get_json()
@@ -65,13 +65,13 @@ def show_map():
         return render_template('map.html')
 
 
-@app.route('/leisure/', methods=['GET'])
+@app.route('/leisure', methods=['GET'])
 def show_leisure():
     idLeisure = request.args.get('id')
     return render_template('leisure.html', id=idLeisure)
 
 
-@app.route('/leisure/create/', methods=['GET', 'POST'])
+@app.route('/leisure/create', methods=['GET', 'POST'])
 def create_leisure():
     if request.method == 'GET':
         return render_template('create_leisure.html', user=current_user)
@@ -89,7 +89,7 @@ def create_leisure():
         return Response(response=json.dumps({"key": leisure.key}), status=200, mimetype=mimetype)
 
 
-@app.route('/leisure/user/')
+@app.route('/leisure/user')
 def show_leisure_user():
     keyLeisure = request.args.get('key')
     return render_template('leisure_user.html', key=keyLeisure)
