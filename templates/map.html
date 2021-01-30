@@ -141,8 +141,8 @@
   }
 
   // Redirect to infoLeisure
-  function infoLeisure(id){
-   return "/leisure?id="+id;
+  function infoLeisure(id, type){
+   return "/leisure?id="+id+'&type='+type;
   }
 
   // Update Map
@@ -160,7 +160,7 @@
       markers.push(LamMarker);
       LamMarker.addTo(map);
       LamMarker.on('click',function (){
-        window.location.href = infoLeisure(leisure.l_id);
+        window.location.href = infoLeisure(leisure.l_id, leisure.leisure_type);
       });
 
     })

@@ -116,7 +116,7 @@
                     {% endif %}
                 </nav>
             </div>
-            {% if r.user == "abc"%}
+            {% if r.user == session.get('current_user_uid')%}
             <div id="editRating" class="box has-text-weight-semibold" style="display: none;">
                 <form action="/saverating" method="POST">
                     <div class="field">
