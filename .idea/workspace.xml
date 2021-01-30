@@ -3,9 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="687d16c0-a2ed-49c1-a1d0-2ee71fcfd207" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entities/rating_entity.py" beforeDir="false" afterPath="$PROJECT_DIR$/entities/rating_entity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entities/user_entity.py" beforeDir="false" afterPath="$PROJECT_DIR$/entities/user_entity.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/map.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +43,7 @@
       <recent name="$PROJECT_DIR$/entities" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.event_entity">
+  <component name="RunManager" selected="Python.leisure_entity">
     <configuration name="event_entity" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="yatam-web-cloud" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -85,8 +88,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.event_entity" />
         <item itemvalue="Python.leisure_entity" />
+        <item itemvalue="Python.event_entity" />
       </list>
     </recent_temporary>
   </component>

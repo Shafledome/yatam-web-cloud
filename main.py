@@ -53,15 +53,15 @@ def start():
         profile_picture = request.form['profilePicture']
         user = User.get_by_uid(uid)
         if user is None:
-            user = User.create_user(uid, email, display_name, profile_picture)
+            User.create_user(uid, email, display_name, profile_picture)
         session['current_user_email'] = email
         session['current_user_uid'] = uid
         session['current_user_display_name'] = display_name
         session['current_user_profile_picture'] = profile_picture
         return json.dumps({'status': 'OK'})
     else:
-        if 'current_user' in session:
-            return render_template('home.html', title='YATAM - Home')
+        if 'current_user_uid' in session:
+            return redirect(url_for('show_home'))
         else:
             return render_template('login.html', title='YATAM - Login')
 
@@ -104,6 +104,28 @@ def show_map():
                             mimetype=mimetype)
         else:
             return render_template('map.html', title='YATAM - Map')
+
+
+@app.route('/profile', methods=['GET'])
+def show_profile():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        return render_template('profile.html', title='YATAM - My Profile')
+
+
+@app.route('/changeDisplayName', methods=['POST'])
+def change_display_name():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        req = request.get_json()
+        User.change_display_name(session['current_user_uid'], req)
+        session.pop('current_user_display_name', None)
+        session['current_user_display_name'] = req['displayName']
+        return redirect(url_for('show_profile'))
+
+
 '''
 @app.route('/leisure', methods=['GET'])
 def show_leisure():
@@ -114,12 +136,13 @@ def show_leisure():
         return render_template('leisure.html', id=idLeisure)
 '''
 
+
 @app.route('/leisure', methods=['GET'])
 def show_leisure():
     l_type = 'MUSEUM'
     leisure = Leisure(l_type).get_by_id(710)
     ratings = Rating.get_ratings_by_leisure('leisure', 710)
-    return render_template('leisure.html', l = leisure, ratings = ratings)
+    return render_template('leisure.html', l=leisure, ratings=ratings)
 
 
 @app.route('/saverating', methods=['GET', 'POST'])
@@ -138,7 +161,7 @@ def save_rating():
             Rating.update_rating(r_Id, data)
         leisure = Leisure(l_type).get_by_id(l_Id)
         ratings = Rating.get_ratings_by_leisure('leisure', l_Id)
-        return render_template('leisure.html', l = leisure, ratings = ratings)
+        return render_template('leisure.html', l=leisure, ratings=ratings)
 
 
 @app.route('/deleterating', methods=['GET', 'POST'])
@@ -149,7 +172,7 @@ def delete_rating():
     Rating.delete_rating(r_Id)
     leisure = Leisure(l_type).get_by_id(l_Id)
     ratings = Rating.get_ratings_by_leisure('leisure', l_Id)
-    return render_template('leisure.html', l = leisure, ratings = ratings)
+    return render_template('leisure.html', l=leisure, ratings=ratings)
 
 '''
 @app.route('/leisure/create', methods=['GET', 'POST'])
@@ -174,7 +197,6 @@ def create_leisure():
 
 @app.route('/leisure/user')
 def show_leisure_user():
-    redirect_to_login()
     keyLeisure = request.args.get('key')
     return render_template('leisure_user.html', key=keyLeisure)
 

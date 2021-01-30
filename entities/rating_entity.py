@@ -63,7 +63,7 @@ class Rating:
         if isinstance(data, dict):
             db.update(Rating.entry, key, data)
             return Rating.get_by_key(key)
-            #return Rating(key=key, grade=data['grade'], description=data['description'], n_likes=data['nlikes'], leisure=data['leisure'], user=data['user'])
+            # return Rating(key=key, grade=data['grade'], description=data['description'], n_likes=data['nlikes'], leisure=data['leisure'], user=data['user'])
         else:
             return None
 

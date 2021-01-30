@@ -38,6 +38,15 @@ class User:
         else:
             return None
 
+    @staticmethod
+    def change_display_name(key, data):
+        # data must be a dictionary
+        if isinstance(data, dict):
+            db.update(User.entry, key, data)
+            return User.get_by_uid(key)
+        else:
+            return None
+
 
 if __name__ == '__main__':
     print('prueba')

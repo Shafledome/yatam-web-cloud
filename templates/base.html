@@ -34,10 +34,10 @@
                         </div>
                         <div class="navbar-end">
                             <div class="navbar-item">
-                                <a class="button is-rounded has-text-grey" href="/home/">Home</a>
+                                <a class="button is-rounded has-text-grey" href="/home">Home</a>
                             </div>
                             <div class="navbar-item">
-                                <a class="button is-primary is-rounded" href="">
+                                <a class="button is-primary is-rounded" href="/profile">
                                     <strong>Profile</strong>
                                 </a>
                             </div>
@@ -47,9 +47,54 @@
             </div>
         </div>
     </div>
-    {% endif %}
-    {% block content %}
-    {% endblock %}
+    <div class="hero is-fullheight is-primary">
+        <div class="hero-head">
+            <div class="block"></div>
+            <div class="block">
+                <div class="column is-three-fifths is-offset-one-fifth">
+                    <div class="box">
+                        <div class="tabs is-boxed is-fullwidth">
+                            <ul>
+                                <li>
+                                    <a href="/home">
+                                        <span class="icon is-small"><i class="fas fa-landmark" aria-hidden="true"></i></span>
+                                        <span>YATAM - Leisures</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <span class="icon is-small"><i class="fas fa-monument" aria-hidden="true"></i></span>
+                                        <span>Leisures from Users</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <span class="icon is-small"><i class="fas fa-spray-can" aria-hidden="true"></i></span>
+                                        <span>Graffities</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/map">
+                                        <span class="icon is-small"><i class="fas fa-map-signs" aria-hidden="true"></i></span>
+                                        <span>Leisures Map</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                                        <span>Events 2020</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </div>
     <div class="hero-foot">
         <footer style="border-top: 1px solid hsl(0, 0%, 93%); padding-top: 1.7rem;">
             <div class="container">
