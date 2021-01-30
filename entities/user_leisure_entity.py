@@ -20,6 +20,9 @@ class UserLeisure:
         self.coordinates = coordinates
         self.user = user
 
+    def encode(self):
+        return self.__dict__
+
     @staticmethod
     def get_all():
         result = []

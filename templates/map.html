@@ -70,71 +70,73 @@
 
   // Icons creation
   function getType(leisure) {
-    tipo = leisure.leisure_type;
     let iconType = L.icon({
-      iconUrl: 'static/museum.svg',
-      iconSize:[30,30],
-      iconAnchor: [15,30]
-    })
-    switch(tipo){
-      case "DOGPARK":
-        iconType =  L.icon({
-          iconUrl: 'static/dogPark.svg',
-          iconSize:[30,30],
-          iconAnchor: [15,30]
-        })
-        break;
-      case "ARTGALLERY":
-        iconType =  L.icon({
-          iconUrl: 'static/artGallery.svg',
-          iconSize:[30,30],
-          iconAnchor: [15,30]
-        })
-        break;
-      case "CINEMA":
-        iconType =  L.icon({
-          iconUrl: './static/cinema.svg',
-          iconSize:[30,30],
-          iconAnchor: [15,30]
-        })
-        break;
-      case "LIBRARY":
-        iconType =  L.icon({
-          iconUrl: 'static/library.svg',
-          iconSize:[30,30],
-          iconAnchor: [15,30]
-        })
-        break;
-      case "MONUMENT":
-        iconType =  L.icon({
-          iconUrl: 'static/monument.svg',
-          iconSize:[30,30],
-          iconAnchor: [15,30]
-        })
-        break;
-      case "THEATER":
-        iconType =  L.icon({
-          iconUrl: 'static/theater.svg',
-          iconSize:[30,30],
-          iconAnchor: [15,30]
-        })
-        break;
-      case "TRAINING":
-        iconType =  L.icon({
-          iconUrl: 'static/training.svg',
-          iconSize:[30,30],
-          iconAnchor: [15,30]
-        })
-        break;
-      case "USERLEISURE":
-        iconType =  L.icon({
-          iconUrl: 'static/Map-Pointer.svg',
-          iconSize:[30,30],
-          iconAnchor: [15,30]
-        });
-        break;
-      default:
-        break;
+        iconUrl: 'static/museum.svg',
+        iconSize: [30, 30],
+        iconAnchor: [15, 30]
+      })
+    if (leisure.leisure_type !== undefined) {
+      tipo = leisure.leisure_type;
+      switch (tipo) {
+        case "DOGPARK":
+          iconType = L.icon({
+            iconUrl: 'static/dogPark.svg',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+          })
+          break;
+        case "ARTGALLERY":
+          iconType = L.icon({
+            iconUrl: 'static/artGallery.svg',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+          })
+          break;
+        case "CINEMA":
+          iconType = L.icon({
+            iconUrl: './static/cinema.svg',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+          })
+          break;
+        case "LIBRARY":
+          iconType = L.icon({
+            iconUrl: 'static/library.svg',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+          })
+          break;
+        case "MONUMENT":
+          iconType = L.icon({
+            iconUrl: 'static/monument.svg',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+          })
+          break;
+        case "THEATER":
+          iconType = L.icon({
+            iconUrl: 'static/theater.svg',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+          })
+          break;
+        case "TRAINING":
+          iconType = L.icon({
+            iconUrl: 'static/training.svg',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+          })
+          break;
+        default:
+          break;
+      }
+    }else{
+        iconType = L.icon({
+            iconUrl: 'static/Map-Pointer.svg',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+          })
+
     }
     return iconType;
 
@@ -153,16 +155,35 @@
     }
   }
 
+  /*function formateo(coordenadas){
+    var x = coordenadas.substr(1,5);
+    var y = coordenadas.substr(8,5);
+    var result = Array()
+    result.push(x);
+    result.push(y);
+    return result;
+
+  }*/
+
   function mostrarDatos(data) {
     data.map((leisure, i) =>{
       iconType = getType(leisure);
-      var LamMarker = new L.marker(leisure.coordinates, {icon:iconType},{alt: infoLeisure(leisure.l_id)});
+      /*if(leisure.leisure_type===undefined){
+        leisure.coordinates = formateo(leisure.coordinates);
+      }*/
+      var LamMarker = new L.marker(leisure.coordinates, {icon:iconType});
       markers.push(LamMarker);
+      console.log(leisure.coordinates)
       LamMarker.addTo(map);
-      LamMarker.on('click',function (){
-        window.location.href = infoLeisure(leisure.l_id, leisure.leisure_type);
-      });
-
+      if(leisure.leisure_type!==undefined) {
+        LamMarker.on('click', function () {
+          window.location.href = infoLeisure(leisure.l_id, leisure.leisure_type);
+        });
+      }else{
+        LamMarker.on('click', function (){
+          window.location.href = "/leisure/user?key="+leisure.key;
+        })
+      }
     })
   }
 
@@ -183,7 +204,7 @@
   }
 
   function fetchData(result) {
-    if (result.lenght == 0) {
+    if (result.lenght === 0) {
             window.location.href('/map');
         } else {
             fetch(`${window.origin}/map`,{

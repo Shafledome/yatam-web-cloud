@@ -98,7 +98,10 @@ def show_map():
     else:
         if request.method == 'POST':
             req = request.get_json()
-            leisures = Leisure(req).get_all()
+            if req == "USERLEISURE":
+                leisures = UserLeisure.get_all()
+            else:
+                leisures = Leisure(req).get_all()
             return Response(response=json.dumps(leisures, default=lambda o: o.encode(), indent=4),
                             status=200,
                             mimetype=mimetype)
@@ -187,25 +190,28 @@ def delete_rating():
         #return render_template('leisure.html', l=leisure, ratings=ratings)
         return redirect(url_for('show_leisure', id = l_Id, type = l_type))
 
-'''
+
 @app.route('/leisure/create', methods=['GET', 'POST'])
 def create_leisure():
-    redirect_to_login()
-    if request.method == 'GET':
-        return render_template('create_leisure.html')
-    elif request.method == 'POST':
-        name = request.form['name']
-        coordinates = request.form['coordinates']
-        description = request.form['description']
-        photo = request.form['photo']
-        schedule = request.form['schedule']
-        address = request.form['address']
-        leisure = UserLeisure.create_user_leisure(name=name, coordinates=coordinates, description=description,
+    if 'current_user_uid' not in session:
+        redirect(url_for('start'))
+    else:
+        if request.method == 'GET':
+            return render_template('create_leisure.html')
+        elif request.method == 'POST':
+            name = request.form['name']
+            coordinates = request.form['coordinates']
+            coordinates = coordinates.split(',')
+            description = request.form['description']
+            photo = request.form['photo']
+            schedule = request.form['schedule']
+            address = request.form['address']
+            leisure = UserLeisure.create_user_leisure(name=name, coordinates=coordinates, description=description,
                                                   url_photo=photo,
-                                                  schedule=schedule, address=address, user=current_user.uid)
+                                                  schedule=schedule, address=address, user=session['current_user_uid'])
 
         return Response(response=json.dumps({"key": leisure.key}), status=200, mimetype=mimetype)
-'''
+
 
 
 @app.route('/leisure/user')
