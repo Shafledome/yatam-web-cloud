@@ -61,6 +61,20 @@ class Event:
             else:
                 continue
 
+    @staticmethod
+    def get_event_coincidences(entry, value):
+        # entries and values must be string, not number or others
+        result = []
+        events = opendata.parse_csv_data_events().values()
+        for event in events:
+            if value.casefold() in event.get(entry).casefold():
+                result.append(Event(e_id=event.get('ID_ACTIVIDAD'), name=event.get('NOMBRE'),
+                                description=event.get('DESCRIPCION'), address=event.get('OTROS_LUGARES'),
+                                schedule=event.get('HORARIO'), start_date=event.get('F_INICIO'), end_date=event.get('F_FIN'),
+                                url=event.get('DIRECCION_WEB'), email=event.get('E_MAIL'), category=event.get('CATEGORIA'),
+                                specialty=event.get('ESPECIALIDAD'), organizer=event.get('ORGANIZA')))
+        return result
+
 
 if __name__ == '__main__':
     # print(opendata.parse_csv_data_events())

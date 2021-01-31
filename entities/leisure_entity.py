@@ -54,6 +54,17 @@ class Leisure:
             else:
                 continue
 
+    def get_leisure_coincidences(self, entry, value):
+        # entries and values must be a string not number or others
+        result = []
+        leisures = opendata.parse_json_data(self.leisure_type).values()
+        for leisure in leisures:
+            if value.casefold() in leisure.get(entry).casefold():
+                result.append(Leisure(leisure_type=self.leisure_type, l_id=leisure.get('id'), name=leisure.get('name'),
+                                  description=leisure.get('description'), address=leisure.get('address'),
+                                  url=leisure.get('url'), email=leisure.get('email'), schedule=leisure.get('schedule'),
+                                  coordinates=[leisure.get('coordinates')[0], leisure.get('coordinates')[1]]))
+        return result
 
 if __name__ == '__main__':
     print(opendata.parse_json_data('MUSEUM'))
