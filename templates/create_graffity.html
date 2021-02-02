@@ -1,0 +1,65 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="container pb-5 pt-5">
+    <h1 class="title">Create a new graffity</h1>
+
+    <div class="field">
+    <label class="label">Photo</label>
+    <div class="control">
+        <input id="photo" type="file" accept=".jpg,.png,.svg">
+    </div>
+    </div>
+
+    <div class="field">
+    <label class="label">Description</label>
+    <div class="control">
+        <textarea class="textarea" id="description" placeholder="Description"></textarea>
+    </div>
+    </div>
+
+    <div class="field is-grouped">
+    <div class="control">
+        <button class="button is-link" onclick=createGraffity()>Submit</button>
+    </div>
+    <div class="control">
+        <button class="button is-link is-light">Cancel</button>
+    </div>
+    </div>
+</div>
+<script>
+    var photo = document.getElementById("photo");
+    var url_photo=""
+    photo.addEventListener("change", ev => {
+            const formData = new FormData();
+            formData.append("image", ev.target.files[0]);
+            fetch("https://api.imgur.com/3/image/",{
+                method:"post",
+                headers:{
+                    Authorization:"Client-ID 812e393caa20a49"
+                },
+                body: formData
+            }).then(data=>data.json()).then(data =>{
+                url_photo = data.data.link;
+            })
+    });
+
+    function createGraffity(){
+        var description = document.getElementById("description");
+        if(url_photo!="" && description!="") {
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = () => {
+                    if (request.readyState == XMLHttpRequest.DONE && request.status ==200) {
+                        window.location.href="/home"; //TODO: Redirect to graffity list (?)
+                    }
+                };
+                console.log(description.value);
+                console.log(`description=${description.value}&photo=${url_photo}`);
+                request.open('POST', '/graffity/create', true);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+                request.setRequestHeader('Access-Control-Allow-Origin', '*');
+                request.send(`description=${description.value}&photo=${url_photo}`);
+        }
+    }
+</script>
+
+{% endblock %}

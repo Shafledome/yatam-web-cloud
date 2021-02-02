@@ -209,10 +209,22 @@ def create_leisure():
             leisure = UserLeisure.create_user_leisure(name=name, coordinates=coordinates, description=description,
                                                   url_photo=photo,
                                                   schedule=schedule, address=address, user=session['current_user_uid'])
-
+                                                  
         return Response(response=json.dumps({"key": leisure.key}), status=200, mimetype=mimetype)
 
-
+@app.route('/graffity/create', methods=['GET', 'POST'])
+def create_graffity():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        if request.method == 'GET':
+            return render_template('create_graffity.html')
+        elif request.method == 'POST':
+                description = request.form['description']
+                photo = request.form['photo']
+                graffity = Graffiti.create_graffiti(description=description, url=photo, user=session['current_user_uid'])
+        return render_template('home.html', title='YATAM - Home') #TO-DO: redirect to graffity list (?)
+    
 
 @app.route('/leisure/user')
 def show_leisure_user():
