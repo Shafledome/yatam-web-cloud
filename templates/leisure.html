@@ -26,11 +26,13 @@
                 </div>
                 <div class="level-right">
                     {% set vars = {'b': True} %}
-                    {% for r in ratings %}
-                        {% if r.user == session.get('current_user_uid') %}
-                            {% if vars.update({'b': False}) %}{% endif %}
-                        {% endif %}
-                    {% endfor %}
+                    {% if ratings != None %}
+                        {% for r in ratings %}
+                            {% if r.user == session.get('current_user_uid') %}
+                                {% if vars.update({'b': False}) %}{% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                     {{ b }}
                     {% if vars.b %}
                         <button class="button is-light"  onclick="rate()">Valorar</button>
