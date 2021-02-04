@@ -129,15 +129,20 @@ def change_display_name():
         return redirect(url_for('show_profile'))
 
 
-'''
-@app.route('/leisure', methods=['GET'])
-def show_leisure():
+@app.route('/graffities', methods=['GET'])
+def show_leisures_user():
     if 'current_user_uid' not in session:
         return redirect(url_for('start'))
     else:
-        idLeisure = request.args.get('id')
-        return render_template('leisure.html', id=idLeisure)
-'''
+        return render_template('graffiti_list.html', title='YATAM - Graffities')
+
+
+@app.route('/leisuresFromUsers', methods=['GET'])
+def show_graffities():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        return render_template('leisures_user.html', title='YATAM - Leisures From Users')
 
 
 @app.route('/leisure', methods=['GET'])
@@ -145,12 +150,11 @@ def show_leisure():
     if 'current_user_uid' not in session:
         return redirect(url_for('start'))
     else:
-        #l_type = 'MUSEUM'
         l_type = request.args.get('type')
         l_Id = int(request.args.get('id'))
         leisure = Leisure(l_type).get_by_id(l_Id)
         ratings = Rating.get_ratings_by_leisure('leisure', l_Id)
-        return render_template('leisure.html', l=leisure, ratings=ratings)
+        return render_template('leisure.html', l=leisure, ratings=ratings, title='YATAM - ' + leisure.name)
 
 
 @app.route('/saverating', methods=['GET', 'POST'])
@@ -170,10 +174,7 @@ def save_rating():
             else:
                 data = {"grade": grade, "description": description}
                 Rating.update_rating(r_Id, data)
-            #leisure = Leisure(l_type).get_by_id(l_Id)
-            #ratings = Rating.get_ratings_by_leisure('leisure', l_Id)
-            #return render_template('leisure.html', l=leisure, ratings=ratings)
-            return redirect(url_for('show_leisure', id = l_Id, type = l_type))
+            return redirect(url_for('show_leisure', id=l_Id, type=l_type))
 
 
 @app.route('/deleterating', methods=['GET', 'POST'])
@@ -185,10 +186,7 @@ def delete_rating():
         l_Id = int(request.form['leisure'])
         l_type = request.form['type']
         Rating.delete_rating(r_Id)
-        #leisure = Leisure(l_type).get_by_id(l_Id)
-        #ratings = Rating.get_ratings_by_leisure('leisure', l_Id)
-        #return render_template('leisure.html', l=leisure, ratings=ratings)
-        return redirect(url_for('show_leisure', id = l_Id, type = l_type))
+        return redirect(url_for('show_leisure', id=l_Id, type=l_type))
 
 
 @app.route('/leisure/create', methods=['GET', 'POST'])
@@ -212,24 +210,33 @@ def create_leisure():
                                                   
         return Response(response=json.dumps({"key": leisure.key}), status=200, mimetype=mimetype)
 
+
 @app.route('/graffity/create', methods=['GET', 'POST'])
 def create_graffity():
     if 'current_user_uid' not in session:
         return redirect(url_for('start'))
     else:
         if request.method == 'GET':
-            return render_template('create_graffity.html')
+            return render_template('create_graffity.html', title='YATAM - Create Graffiti')
         elif request.method == 'POST':
-                description = request.form['description']
-                photo = request.form['photo']
-                graffity = Graffiti.create_graffiti(description=description, url=photo, user=session['current_user_uid'])
-        return render_template('home.html', title='YATAM - Home') #TO-DO: redirect to graffity list (?)
+            description = request.form['description']
+            photo = request.form['photo']
+            Graffiti.create_graffiti(description=description, url=photo, user=session['current_user_uid'])
+        return redirect(url_for('graffities'))
     
 
 @app.route('/leisure/user')
 def show_leisure_user():
     keyLeisure = request.args.get('key')
     return render_template('leisure_user.html', key=keyLeisure)
+
+
+@app.route('/events', methods=['GET'])
+def show_events():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        return render_template('events.html', title='YATAM - Events 2020')
 
 
 if __name__ == '__main__':

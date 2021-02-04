@@ -66,6 +66,7 @@ class Leisure:
                                   coordinates=[leisure.get('coordinates')[0], leisure.get('coordinates')[1]]))
         return result
 
+
 if __name__ == '__main__':
     print(opendata.parse_json_data('MUSEUM'))
     # print(Leisure('MUSEUM').get_all())

@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+{% block content %}    
+<div class="block"></div>
+<div class="columns">
+    <div class="column is-8 is-offset-2">
+        <div class="box">
+
+        </div>
+    </div>
+</div>
+<div class="columns">
+    <div class="column is-8 is-offset-2">
+        <div class="box">
+
+        </div>
+    </div>
+    <a href="/graffity/create" class="button is-danger is-large" id="add_button">Add New Leisure</a>
+</div>
+<script>
+
+</script>
+<style>
+    #add_button {
+        bottom: 20px;
+        right: 30px;
+        z-index: 99;
+        position: fixed;
+    }
+</style>
+{% endblock %}

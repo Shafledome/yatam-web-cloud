@@ -3,12 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="687d16c0-a2ed-49c1-a1d0-2ee71fcfd207" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entities/rating_entity.py" beforeDir="false" afterPath="$PROJECT_DIR$/entities/rating_entity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entities/user_entity.py" beforeDir="false" afterPath="$PROJECT_DIR$/entities/user_entity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entities/leisure_entity.py" beforeDir="false" afterPath="$PROJECT_DIR$/entities/leisure_entity.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/create_graffity.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/create_graffity.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/leisure.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/leisure.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,22 +106,22 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="939" height="278" key="GridCell.Tab.0.bottom" timestamp="1610925748671">
+    <state width="939" height="278" key="GridCell.Tab.0.bottom" timestamp="1612033893009">
       <screen x="0" y="32" width="1920" height="1048" />
     </state>
-    <state width="939" height="278" key="GridCell.Tab.0.bottom/0.32.1920.1048@0.32.1920.1048" timestamp="1610925748671" />
-    <state width="939" height="278" key="GridCell.Tab.0.center" timestamp="1610925748665">
+    <state width="939" height="278" key="GridCell.Tab.0.bottom/0.32.1920.1048@0.32.1920.1048" timestamp="1612033893009" />
+    <state width="939" height="278" key="GridCell.Tab.0.center" timestamp="1612033893008">
       <screen x="0" y="32" width="1920" height="1048" />
     </state>
-    <state width="939" height="278" key="GridCell.Tab.0.center/0.32.1920.1048@0.32.1920.1048" timestamp="1610925748665" />
-    <state width="939" height="278" key="GridCell.Tab.0.left" timestamp="1610925748661">
+    <state width="939" height="278" key="GridCell.Tab.0.center/0.32.1920.1048@0.32.1920.1048" timestamp="1612033893008" />
+    <state width="939" height="278" key="GridCell.Tab.0.left" timestamp="1612033893008">
       <screen x="0" y="32" width="1920" height="1048" />
     </state>
-    <state width="939" height="278" key="GridCell.Tab.0.left/0.32.1920.1048@0.32.1920.1048" timestamp="1610925748661" />
-    <state width="939" height="278" key="GridCell.Tab.0.right" timestamp="1610925748669">
+    <state width="939" height="278" key="GridCell.Tab.0.left/0.32.1920.1048@0.32.1920.1048" timestamp="1612033893008" />
+    <state width="939" height="278" key="GridCell.Tab.0.right" timestamp="1612033893008">
       <screen x="0" y="32" width="1920" height="1048" />
     </state>
-    <state width="939" height="278" key="GridCell.Tab.0.right/0.32.1920.1048@0.32.1920.1048" timestamp="1610925748669" />
+    <state width="939" height="278" key="GridCell.Tab.0.right/0.32.1920.1048@0.32.1920.1048" timestamp="1612033893008" />
     <state x="679" y="146" key="SettingsEditor" timestamp="1611440974413">
       <screen x="0" y="32" width="1920" height="1048" />
     </state>

@@ -80,7 +80,7 @@
 
         data.forEach(element => {
             var string_html = `
-                <a onclick="open_leisure(${(element.l_id)},${element.leisure_type})"><div class="card">
+                <a onclick="open_leisure(${element.l_id}, '${element.leisure_type}')"><div class="card">
                         <div class="card-content">
                             <div class="media">
                                 <div class="media-content">

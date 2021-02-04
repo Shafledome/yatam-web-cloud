@@ -39,8 +39,10 @@ class Rating:
 
     @staticmethod
     def get_ratings_by_leisure(order=None, value=None):
-        # ordered dictionary to list and getting first element
-        rating = list(db.get_dict(Rating.entry, order=order, value=value).values())
+        #rating = list(db.get_dict(Rating.entry, order=order, value=value).values())
+        rating = db.get_dict(Rating.entry, order=order, value=value)
+        if rating:
+            rating = list(db.get_dict(Rating.entry, order=order, value=value).values())
         return rating
         
     @staticmethod
