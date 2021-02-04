@@ -219,17 +219,26 @@ def create_graffity():
         if request.method == 'GET':
             return render_template('create_graffity.html', title='YATAM - Create Graffiti')
         elif request.method == 'POST':
-            description = request.form['description']
-            photo = request.form['photo']
-            Graffiti.create_graffiti(description=description, url=photo, user=session['current_user_uid'])
-        return redirect(url_for('graffities'))
-    
+                description = request.form['description']
+                photo = request.form['photo']
+                graffity = Graffiti.create_graffiti(description=description, url=photo, user=session['current_user_uid'])
+        return redirect(url_for('show_graffity', key = graffity.key))
+
+@app.route('/graffity')
+def show_graffity():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        key = str(request.args.get('key'))
+        graffity = Graffiti.get_by_key(key)
+        description = graffity.description
+        nlikes = graffity.n_likes
+        return render_template('graffity.html', description = description, nlikes = nlikes)
 
 @app.route('/leisure/user')
 def show_leisure_user():
     keyLeisure = request.args.get('key')
     return render_template('leisure_user.html', key=keyLeisure)
-
 
 @app.route('/events', methods=['GET'])
 def show_events():
