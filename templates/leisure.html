@@ -1,27 +1,26 @@
 {% extends 'base.html'%}
 {% block content %}
-
-<div class="hero is-fullheight is-primary">
-    <div class="hero-body">
-        <div class="column is-half is-offset-one-quarter has-background-danger" >
-            <h1 class="title is-3">
+<div class="columns">
+    <div class="column is-8 is-offset-2">
+        <div class="box">
+            <h1 class="title is-3 has-text-grey-darker">
                 {{ l.name }}
             </h1>
-            <h2 class="title is-6">
+            <h2 class="title is-6 has-text-grey">
             {% if l.description %}
                 {{ l.description }}<br>
             {% endif %}
             </h2>
             <nav class="level">
                 <div class="level-left">
-                    <p class="title is-6">
-                        {{ l.address }}<br>
-                        {{ l.url }}<br>
-                        {{ l.email }}<br>
+                    <p class="title is-6 has-text-grey">
+                        {{ l.address }}<br><br>
+                        {{ l.url }}<br><br>
+                        {{ l.email }}<br><br>
                         {% if l.schedule %}
-                            {{ l.schedule }}<br>
+                            {{ l.schedule }}<br><br>
                         {% endif %}
-                        {{ l.coordinates }}<br>
+                        {{ l.coordinates }}<br><br>
                     </p>
                 </div>
                 <div class="level-right">
@@ -35,12 +34,12 @@
                     {% endif %}
                     {{ b }}
                     {% if vars.b %}
-                        <button class="button is-light"  onclick="rate()">Valorar</button>
+                        <a class="button is-primary"  onclick="rate()">Valorar</a>
                     {% endif %}
 
                 </div>
             </nav>
-            <div id="createRating" class="box has-text-weight-semibold" style="display: none;">
+            <div id="createRating" class="box has-text-weight-semibold has-background-primary-light" style="display: none;">
                 <form action="/saverating" method="POST">
                     <div class="field">
                         <input type="hidden" name="id" value="{{ 'null' }}" />
@@ -76,7 +75,7 @@
                     </div>
                     <div class="field is-grouped">
                         <div class="control">
-                          <button class="button is-link" type="submit">Publicar</button>
+                          <button class="button is-primary" type="submit">Publicar</button>
                         </div>
                     </div>
                 </form>
@@ -184,7 +183,7 @@
                     </div>
                     <div class="field is-grouped">
                         <div class="control">
-                          <button class="button is-link" type="submit">Guardar cambios</button>
+                          <button class="button is-primary" type="submit">Guardar cambios</button>
                         </div>
                     </div>
                 </form>
@@ -192,22 +191,28 @@
             {% endif %}
             {% endfor %}
             {% else %}
-            <div class="box has-text-centered has-text-weight-semibold">
-                Este punto de ocio aún no tiene ninguna valoración<br>
-                ¡Añade la primera pinchando en el botón de Valorar!<br>
+            <div class="box has-text-centered has-text-weight-semibold has-background-danger">
+                <p class="title is-6 has-text-white">Este punto de ocio aún no tiene ninguna valoración<br>
+                ¡Añade la primera pinchando en el botón de Valorar!<br></p>
             </div>
             {% endif %}
         </div>
     </div>
 </div>
-
+<div class="block"></div>
+<br><br>
 <script>
 
 var rated = new Boolean(false);
 
 function rate() {
   var x = document.getElementById("createRating");
-  x.style.display = "block";
+
+  if (x.style.display == "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
 }
 
 function edit(key, editRating) {
