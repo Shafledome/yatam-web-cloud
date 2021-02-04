@@ -194,6 +194,22 @@ def delete_rating():
         return redirect(url_for('show_leisure', id=l_Id, type=l_type))
 
 
+@app.route('/likerating', methods=['GET', 'POST'])
+def like_rating():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        if request.method == 'POST':
+            r_Id = request.form['id']
+            l_Id = int(request.form['leisure'])
+            l_type = request.form['type']
+            n_likes = int(request.form['nlikes']) + 1
+            user = session['current_user_uid']
+            data = {"n_likes": n_likes}
+            Rating.update_rating(r_Id, data)
+            return redirect(url_for('show_leisure', id=l_Id, type=l_type))
+
+
 @app.route('/leisure/create', methods=['GET', 'POST'])
 def create_leisure():
     leisure = None

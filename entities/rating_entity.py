@@ -1,6 +1,7 @@
 import os
 import sys
 import utils.key_gen as keygen
+from entities.user_entity import User
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import utils.db as db
@@ -22,28 +23,32 @@ class Rating:
         result = []
         ratings = db.get_dict(Rating.entry)
         for key, value in ratings.items():
-            result.append(Rating(key=value.get('key'), grade=value.get('grade'), description=value.get('description'), n_likes=value.get('nlikes'),
-                                 leisure=value.get('url'), user=value.get('user')))
+            result.append(Rating(key=value.get('key'), grade=value.get('grade'), description=value.get('description'), n_likes=value.get('n_likes'),
+                                 leisure=value.get('url'), user=User.get_by_uid(value.get('user'))))
         return result
 
     @staticmethod
     def get_by_key(key):
         rating = db.get_dict(Rating.entry + '/' + key)
-        return Rating(key=rating['key'], grade=rating['grade'], description=rating['description'], n_likes=rating['nlikes'], leisure=rating['leisure'], user=rating['user'])
+        return Rating(key=rating['key'], grade=rating['grade'], description=rating['description'], n_likes=rating['n_likes'], leisure=rating['leisure'], user=rating['user'])
 
     @staticmethod
     def get_rating(order=None, value=None):
         # ordered dictionary to list and getting first element
         rating = list(db.get_dict(Rating.entry, order=order, value=value).values())[0]
-        return Rating(key=rating['key'], description=rating['description'], n_likes=rating['nlikes'], leisure=rating['leisure'], user=rating['user'])
+        return Rating(key=rating['key'], description=rating['description'], n_likes=rating['n_likes'], leisure=rating['leisure'], user=rating['user'])
 
     @staticmethod
     def get_ratings_by_leisure(order=None, value=None):
         #rating = list(db.get_dict(Rating.entry, order=order, value=value).values())
-        rating = db.get_dict(Rating.entry, order=order, value=value)
-        if rating:
-            rating = list(db.get_dict(Rating.entry, order=order, value=value).values())
-        return rating
+        ratings = db.get_dict(Rating.entry, order=order, value=value)
+        result = []
+        if ratings:
+            for key, value in ratings.items():
+                result.append(Rating(key=value.get('key'), grade=value.get('grade'), description=value.get('description'), n_likes=value.get('n_likes'),
+                                 leisure=value.get('url'), user=User.get_by_uid(value.get('user'))))
+            #rating = list(db.get_dict(Rating.entry, order=order, value=value).values())
+        return result
         
     @staticmethod
     def create_rating(grade, description, leisure, user):
@@ -52,7 +57,7 @@ class Rating:
             'key': new_key,
             'grade': grade,
             'description': str(description),
-            'nlikes': 0,
+            'n_likes': 0,
             'leisure': leisure,
             'user': user
         }
@@ -65,7 +70,7 @@ class Rating:
         if isinstance(data, dict):
             db.update(Rating.entry, key, data)
             return Rating.get_by_key(key)
-            # return Rating(key=key, grade=data['grade'], description=data['description'], n_likes=data['nlikes'], leisure=data['leisure'], user=data['user'])
+            # return Rating(key=key, grade=data['grade'], description=data['description'], n_likes=data['n_likes'], leisure=data['leisure'], user=data['user'])
         else:
             return None
 

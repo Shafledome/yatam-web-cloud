@@ -85,7 +85,7 @@
             <div id="{{ r.key }}" class="box" style="display: block;">
                 <nav class="level">
                     <div class="level-left">
-                        <strong>{{ r.user }}</strong>
+                        <strong>{{ r.user.display_name }}</strong>
                     </div>
                     <div class="level-right">
                         <strong>{{ r.grade }} de 5</strong>
@@ -94,7 +94,7 @@
                 {{ r.description }}<br>
                 <nav class="level">
                     <div class="level-left"></div>
-                    {% if r.user == session.get('current_user_uid') %}
+                    {% if r.user.uid == session.get('current_user_uid') %}
                     <div class="level-right">
                         <div class="field is-grouped">
                             <button class="button is-text" onclick="edit('{{ r.key }}', 'editRating')">Editar</button>
@@ -108,16 +108,26 @@
                     </div>
                     {% else %}
                     <div class="level-right">
-                        {{ r.nlikes }}
+                        {{ r.n_likes }}
                         &nbsp;
                         <div class="field is-grouped">
-                            <button class="far fa-thumbs-up" onclick="like()"></button>
+                            <form action="/likerating" method="POST">
+                                <input type="hidden" name="id" value="{{ r.key }}" />
+                                <input type="hidden" name="leisure" value="{{ l.l_id }}" />
+                                <input type="hidden" name="type" value="{{ l.leisure_type }}" />
+                                <input type="hidden" name="nlikes" value="{{ r.n_likes }}" />
+                                <button class="button is-text" type="submit">
+                                    <span class="icon is-small">
+                                        <i class="far fa-thumbs-up"></i>
+                                    </span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                     {% endif %}
                 </nav>
             </div>
-            {% if r.user == session.get('current_user_uid')%}
+            {% if r.user.uid == session.get('current_user_uid')%}
             <div id="editRating" class="box has-text-weight-semibold" style="display: none;">
                 <form action="/saverating" method="POST">
                     <div class="field">
