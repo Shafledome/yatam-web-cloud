@@ -9,7 +9,6 @@ from entities.rating_entity import Rating
 from entities.user_leisure_entity import UserLeisure
 from dotenv import load_dotenv
 
-
 import os
 import json
 
@@ -21,7 +20,6 @@ app.secret_key = session_key
 
 CORS(app)
 mimetype = 'application/json'
-
 
 # heroku local web for local run
 # Definition of methods for endpoints
@@ -191,6 +189,7 @@ def delete_rating():
 
 @app.route('/leisure/create', methods=['GET', 'POST'])
 def create_leisure():
+    leisure = None
     if 'current_user_uid' not in session:
         redirect(url_for('start'))
     else:
@@ -205,10 +204,11 @@ def create_leisure():
             schedule = request.form['schedule']
             address = request.form['address']
             leisure = UserLeisure.create_user_leisure(name=name, coordinates=coordinates, description=description,
-                                                  url_photo=photo,
-                                                  schedule=schedule, address=address, user=session['current_user_uid'])
-                                                  
-        return Response(response=json.dumps({"key": leisure.key}), status=200, mimetype=mimetype)
+                                                      url_photo=photo,
+                                                      schedule=schedule, address=address,
+                                                      user=session['current_user_uid'])
+        if leisure is not None:
+            return Response(response=json.dumps({"key": leisure.key}), status=200, mimetype=mimetype)
 
 
 @app.route('/graffity/create', methods=['GET', 'POST'])
@@ -223,12 +223,12 @@ def create_graffity():
             photo = request.form['photo']
             Graffiti.create_graffiti(description=description, url=photo, user=session['current_user_uid'])
         return redirect(url_for('graffities'))
-    
+
 
 @app.route('/leisure/user')
 def show_leisure_user():
-    keyLeisure = request.args.get('key')
-    return render_template('leisure_user.html', key=keyLeisure)
+    key_leisure = request.args.get('key')
+    return render_template('leisure_user.html', key=key_leisure)
 
 
 @app.route('/events', methods=['GET'])
