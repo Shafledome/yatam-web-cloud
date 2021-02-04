@@ -49,11 +49,9 @@
             var request = new XMLHttpRequest();
             request.onreadystatechange = () => {
                     if (request.readyState == XMLHttpRequest.DONE && request.status ==200) {
-                        window.location.href="/home"; //TODO: Redirect to graffity list (?)
+                        window.location.href="/graffity"; //TODO: Redirect to graffity list (?)
                     }
                 };
-                console.log(description.value);
-                console.log(`description=${description.value}&photo=${url_photo}`);
                 request.open('POST', '/graffity/create', true);
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
                 request.setRequestHeader('Access-Control-Allow-Origin', '*');
