@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, Response, 
 from datetime import datetime
 from entities.user_entity import User
 from entities.event_entity import Event
-from entities.graffity_entity import Graffiti
+from entities.graffiti_entity import Graffiti
 from entities.leisure_entity import Leisure
 from entities.rating_entity import Rating
 from entities.user_leisure_entity import UserLeisure
@@ -127,16 +127,23 @@ def change_display_name():
         return redirect(url_for('show_profile'))
 
 
-@app.route('/graffities', methods=['GET'])
-def show_leisures_user():
+@app.route('/graffities', methods=['GET', 'POST'])
+def show_graffities():
     if 'current_user_uid' not in session:
         return redirect(url_for('start'))
     else:
-        return render_template('graffiti_list.html', title='YATAM - Graffities')
+        if request.method == 'POST':
+            req = request.get_json()
+            graffities = Graffiti.get_all()
+            return Response(response=json.dumps(graffities[req['from']: req['to']], default=lambda o: o.encode(), indent=4),
+                            status=200,
+                            mimetype=mimetype)
+        else:
+            return render_template('graffiti_list.html', title='YATAM - Graffities')
 
 
 @app.route('/leisuresFromUsers', methods=['GET'])
-def show_graffities():
+def show_leisures_from_users():
     if 'current_user_uid' not in session:
         return redirect(url_for('start'))
     else:
@@ -211,29 +218,30 @@ def create_leisure():
             return Response(response=json.dumps({"key": leisure.key}), status=200, mimetype=mimetype)
 
 
-@app.route('/graffity/create', methods=['GET', 'POST'])
-def create_graffity():
+@app.route('/graffiti/create', methods=['GET', 'POST'])
+def create_graffiti():
     if 'current_user_uid' not in session:
         return redirect(url_for('start'))
     else:
         if request.method == 'GET':
-            return render_template('create_graffity.html', title='YATAM - Create Graffiti')
+            return render_template('create_graffiti.html', title='YATAM - Create Graffiti')
         elif request.method == 'POST':
-                description = request.form['description']
-                photo = request.form['photo']
-                graffity = Graffiti.create_graffiti(description=description, url=photo, user=session['current_user_uid'])
-        return redirect(url_for('show_graffity', key = graffity.key))
+            description = request.form['description']
+            photo = request.form['photo']
+            graffiti = Graffiti.create_graffiti(description=description, url=photo, user=session['current_user_uid'])
+            return redirect(url_for('show_graffiti', key=graffiti.key))
 
-@app.route('/graffity')
-def show_graffity():
+
+@app.route('/graffiti', methods=['POST'])
+def show_graffiti():
     if 'current_user_uid' not in session:
         return redirect(url_for('start'))
     else:
         key = str(request.args.get('key'))
-        graffity = Graffiti.get_by_key(key)
-        description = graffity.description
-        nlikes = graffity.n_likes
-        return render_template('graffity.html', description = description, nlikes = nlikes)
+        graffiti = Graffiti.get_by_key(key)
+        description = graffiti.description
+        nlikes = graffiti.n_likes
+        return render_template('graffiti.html', description=description, nlikes=nlikes)
 
 
 @app.route('/leisure/user')
@@ -251,4 +259,4 @@ def show_events():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port='5000', debug=True)
+    app.run(host='localhost', port='5000', debug=True)

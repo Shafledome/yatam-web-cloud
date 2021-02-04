@@ -21,7 +21,7 @@
 
             <div class="field is-grouped">
                 <div class="control">
-                    <a class="button is-primary" onclick=createGraffity()>Submit</a>
+                    <a class="button is-primary" onclick=createGraffiti()>Submit</a>
                 </div>
                 <div class="control">
                     <a href="/graffities" class="button is-danger is-light">Cancel</a>
@@ -49,16 +49,16 @@
             })
     });
 
-    function createGraffity(){
+    function createGraffiti(){
         var description = document.getElementById("description");
         if(url_photo!="" && description!="") {
             var request = new XMLHttpRequest();
             request.onreadystatechange = () => {
                     if (request.readyState == XMLHttpRequest.DONE && request.status ==200) {
-                        window.location.href="/graffity"; //TODO: Redirect to graffity list (?)
+                        window.location.href="/graffities";
                     }
                 };
-                request.open('POST', '/graffity/create', true);
+                request.open('POST', '/graffiti/create', true);
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
                 request.setRequestHeader('Access-Control-Allow-Origin', '*');
                 request.send(`description=${description.value}&photo=${url_photo}`);

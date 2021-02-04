@@ -10,14 +10,94 @@
 </div>
 <div class="columns">
     <div class="column is-8 is-offset-2">
-        <div class="box">
-
+        <div class="box" id="mainBox">
+            <progress class="progress is-danger" max="100">30%</progress>
         </div>
     </div>
-    <a href="/graffity/create" class="button is-danger is-large" id="add_button">Add New Graffiti</a>
+    <a href="/graffiti/create" class="button is-danger is-large" id="add_button">Add New Graffiti</a>
 </div>
 <script>
+    var fromIndex = 0;
+    var toIndex = 5;
 
+    charge_new_graffities();
+
+    function charge_new_graffities() {
+        range = {from: fromIndex, to: toIndex};
+        toIndex += 5;
+        fetch(`${window.origin}/graffities`, {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify(range),
+            cache: 'no-cache',
+            headers: new Headers({
+                'content-type': 'application/json'
+            })
+        }).then((response) => {
+            if (response.status !== 200) {
+                console.log(`Response status was not 200: ${response.status}`);
+                return ;
+            }
+            response.json().then( (data) => {
+                render_cards(data);
+            })
+        })
+    }
+
+    function open_graffiti(key) {
+        window.location.href = "/graffiti?key="+key;
+    }
+
+    function render_cards(data) {
+        var box = document.getElementById('mainBox');
+        var loadMore = document.createElement('a');
+        
+        loadMore.onclick = () => {
+            charge_new_graffities();
+            loadMore.remove();
+        };
+        loadMore.className = "button is-large is-primary";
+        loadMore.innerHTML = "Load more graffities";
+
+        box.innerHTML = '<progress class="progress is-danger" max="100">30%</progress>';
+
+        var finalHTML = '';
+
+        data.forEach(element => {
+            var string_html = `
+            <a onclick="open_graffiti(${element.key})">
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            <img src="${element.url}"/>
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-48x48">
+                                    <img src="${element.user.profile_picture}">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4 has-text-grey-darker">${element.user.display_name}</p>
+                                <p class="subtitle is-6 has-text-grey">${element.user.email}</p>
+                            </div>
+                        </div>
+    
+                        <div class="content">
+                            ${element.description}
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <br><br>
+            `            
+            finalHTML += string_html;
+        });
+        box.innerHTML = finalHTML;
+        box.appendChild(loadMore);
+    }
 </script>
 <style>
     #add_button {

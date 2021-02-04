@@ -1,6 +1,7 @@
 import os
 import sys
 import utils.key_gen as keygen
+from entities.user_entity import User
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import utils.db as db
@@ -16,13 +17,16 @@ class Graffiti:
         self.url = url
         self.user = user
 
+    def encode(self):
+        return self.__dict__
+
     @staticmethod
     def get_all():
         result = []
         graffities = db.get_dict(Graffiti.entry)
         for key, value in graffities.items():
             result.append(Graffiti(key=value.get('key'), description=value.get('description'), n_likes=value.get('nlikes'),
-                                   url=value.get('url'), user=value.get('user')))
+                                   url=value.get('url'), user=User.get_by_uid(value.get('user'))))
         return result
 
     @staticmethod

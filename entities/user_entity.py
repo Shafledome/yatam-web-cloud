@@ -14,6 +14,9 @@ class User:
         self.display_name = display_name
         self.profile_picture = profile_picture
 
+    def encode(self):
+        return self.__dict__
+
     @staticmethod
     def get_by_uid(uid):
         user = db.get_dict(User.entry + '/' + uid)

@@ -132,7 +132,7 @@
       }
     }else{
         iconType = L.icon({
-            iconUrl: 'static/Map-Pointer.svg',
+            iconUrl: 'static/user.svg',
             iconSize: [30, 30],
             iconAnchor: [15, 30]
           })
@@ -140,11 +140,6 @@
     }
     return iconType;
 
-  }
-
-  // Redirect to infoLeisure
-  function infoLeisure(id, type){
-   return "/leisure?id="+id+'&type='+type;
   }
 
   // Update Map
@@ -155,29 +150,17 @@
     }
   }
 
-  /*function formateo(coordenadas){
-    var x = coordenadas.substr(1,5);
-    var y = coordenadas.substr(8,5);
-    var result = Array()
-    result.push(x);
-    result.push(y);
-    return result;
-
-  }*/
-
   function mostrarDatos(data) {
     data.map((leisure, i) =>{
       iconType = getType(leisure);
-      /*if(leisure.leisure_type===undefined){
-        leisure.coordinates = formateo(leisure.coordinates);
-      }*/
+
       var LamMarker = new L.marker(leisure.coordinates, {icon:iconType});
       markers.push(LamMarker);
       console.log(leisure.coordinates)
       LamMarker.addTo(map);
       if(leisure.leisure_type!==undefined) {
         LamMarker.on('click', function () {
-          window.location.href = infoLeisure(leisure.l_id, leisure.leisure_type);
+          window.location.href = "/leisure?id="+leisure.l_id+"&type="+leisure.leisure_type;
         });
       }else{
         LamMarker.on('click', function (){
