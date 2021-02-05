@@ -1,59 +1,67 @@
 {% extends 'base.html'%}
 {% block content %}
+<div class="columns">
+  <div class="column is-8 is-offset-2">
+    <div class="box">
+      <p class="title is-4 has-text-grey-darker">Create your own Leisure</p>
+      <br>
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <input class="input" id="name" type="text" placeholder="Name">
+        </div>
+      </div>
+      <br>
+      <div class="field">
+        <label class="label">Coordinates</label>
+        <div class="control">
+          <input class="input" id="coordinates" type="text" placeholder="Use , to separate lat from long e.g. xx.xx, yy.yy">
+        </div>
+      </div>
+      <br>
+      <div class="field">
+        <label class="label">Photo</label>
+        <div class="control">
+          <input id="photo" type="file" accept=".jpg,.png,.svg">
+        </div>
+      </div>
+      <br>
+      <div class="field">
+        <label class="label">Schedule</label>
+        <div class="control">
+          <input class="input" id="schedule" type="text" placeholder="Schedule">
+        </div>
+      </div>
+      <br>
+      <div class="field">
+        <label class="label">Address</label>
+        <div class="control">
+          <input class="input" id="address" type="text" placeholder="Address">
+        </div>
+      </div>
+      <br>
+      <div class="field">
+        <label class="label">Description</label>
+        <div class="control">
+          <textarea class="textarea" id="description" placeholder="Description"></textarea>
+        </div>
+      </div>
+      <br>
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary" onclick=crearLeisure()>Submit</button>
+        </div>
+        <div class="control">
+          <button class="button is-primary is-light">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
 <h1>
     Create your own Leisure
 </h1>
-
-<br/>
-<div class="field">
-  <label class="label">Name</label>
-  <div class="control">
-    <input class="input" id="name" type="text" placeholder="Name">
-  </div>
-</div>
-<div class="field">
-  <label class="label">Coordinates</label>
-  <div class="control">
-    <input class="input" id="coordinates" type="text" placeholder="Use , to separate lat from long e.g. xx.xx, yy.yy">
-  </div>
-</div>
-
-<div class="field">
-  <label class="label">Photo</label>
-  <div class="control">
-    <input id="photo" type="file" accept=".jpg,.png,.svg">
-  </div>
-</div>
-
-<div class="field">
-  <label class="label">Schedule</label>
-  <div class="control">
-    <input class="input" id="schedule" type="text" placeholder="Schedule">
-  </div>
-</div>
-
-<div class="field">
-  <label class="label">Address</label>
-  <div class="control">
-    <input class="input" id="address" type="text" placeholder="Address">
-  </div>
-</div>
-
-<div class="field">
-  <label class="label">Description</label>
-  <div class="control">
-    <textarea class="textarea" id="description" placeholder="Description"></textarea>
-  </div>
-</div>
-
-<div class="field is-grouped">
-  <div class="control">
-    <button class="button is-link" onclick=crearLeisure()>Submit</button>
-  </div>
-  <div class="control">
-    <button class="button is-link is-light">Cancel</button>
-  </div>
-</div>
 
 <script>
   var photo = document.getElementById("photo");

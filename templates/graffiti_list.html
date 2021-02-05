@@ -4,7 +4,10 @@
 <div class="columns">
     <div class="column is-8 is-offset-2">
         <div class="box">
-
+            <p class="title is-4 has-text-grey-darker">Search Graffities by their description</p>
+            <input class="input is-primary" type="text" placeholder="Enter text to search">
+            <br><br>
+            <a class="button is-primary is-light" onclick="filter_description()">Search</a>
         </div>
     </div>
 </div>
@@ -98,6 +101,11 @@
         box.innerHTML = finalHTML;
         box.appendChild(loadMore);
     }
+
+    function filter_description() {
+        
+    }
+
 </script>
 <style>
     #add_button {

@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="687d16c0-a2ed-49c1-a1d0-2ee71fcfd207" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entities/graffiti_entity.py" beforeDir="false" afterPath="$PROJECT_DIR$/entities/graffiti_entity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/graffiti.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/graffiti.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/create_leisure.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/create_leisure.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/graffiti_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/graffiti_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/leisures_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/leisures_user.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
