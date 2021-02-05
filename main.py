@@ -203,10 +203,11 @@ def like_rating():
             r_Id = request.form['id']
             l_Id = int(request.form['leisure'])
             l_type = request.form['type']
-            n_likes = int(request.form['nlikes']) + 1
+            n_likes = int(request.form['nlikes'])
             user = session['current_user_uid']
-            data = {"n_likes": n_likes}
-            Rating.update_rating(r_Id, data)
+            #data = {"n_likes": n_likes}
+            #Rating.update_rating(r_Id, data)
+            Rating.like_rating(r_Id, user, n_likes)
             return redirect(url_for('show_leisure', id=l_Id, type=l_type))
 
 
