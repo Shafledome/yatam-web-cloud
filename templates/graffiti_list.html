@@ -87,18 +87,6 @@
     
                         <div class="content">
                             ${element.description}
-            `
-            if (element.user.uid == session.get('current_user_uid')) {
-                string_html +=`
-                    <a class="button is-text" onclick="">Editar</a>
-                    <a class="button is-text" onclick="">Borrar</a>
-                `
-            } else {
-                string_html += `
-                    <a class="button is-primary is-light" onclick=""><i class="far fa-thumbs-up"></i>&nbsp;&nbsp;${ graffiti.n_likes }</a>
-                `
-            }  
-            string_html += `
                         </div>
                     </div>
                 </div>
