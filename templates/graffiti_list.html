@@ -5,9 +5,9 @@
     <div class="column is-8 is-offset-2">
         <div class="box">
             <p class="title is-4 has-text-grey-darker">Search Graffities by their description</p>
-            <input class="input is-primary" type="text" placeholder="Enter text to search">
+            <input class="input is-primary" id="search" type="text" onchange="filter_description()" placeholder="Enter text to search">
             <br><br>
-            <a class="button is-primary is-light" onclick="filter_description()">Search</a>
+            <!-- <a class="button is-primary is-light" onclick="filter_description()">Search</a> -->
         </div>
     </div>
 </div>
@@ -22,9 +22,11 @@
 <script>
     var fromIndex = 0;
     var toIndex = 5;
-
+    var description = document.querySelector('input');
+    description.addEventListener('change', filter_description);
+    
     charge_new_graffities();
-
+    
     function charge_new_graffities() {
         range = {from: fromIndex, to: toIndex};
         toIndex += 5;
@@ -46,11 +48,11 @@
             })
         })
     }
-
+    
     function open_graffiti(key) {
         window.location.href = "/graffiti?key="+key;
     }
-
+    
     function render_cards(data) {
         var box = document.getElementById('mainBox');
         var loadMore = document.createElement('a');
@@ -61,11 +63,11 @@
         };
         loadMore.className = "button is-large is-primary";
         loadMore.innerHTML = "Load more graffities";
-
+        
         box.innerHTML = '<progress class="progress is-danger" max="100">30%</progress>';
-
+        
         var finalHTML = '';
-
+        
         data.forEach(element => {
             var string_html = `
             <a onclick="open_graffiti('${element.key}')">
@@ -87,7 +89,7 @@
                                 <p class="subtitle is-6 has-text-grey">${element.user.email}</p>
                             </div>
                         </div>
-    
+                        
                         <div class="content">
                             ${element.description}
                         </div>
@@ -101,11 +103,31 @@
         box.innerHTML = finalHTML;
         box.appendChild(loadMore);
     }
-
-    function filter_description() {
-        
+    
+    function filter_description(e) {
+        description = e.target.value;
+        if (description != "")
+        {
+            fetch(`${window.origin}/graffities/search`, {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify(description),
+                cache: 'no-cache',
+                headers: new Headers({
+                    'content-type': 'application/json'
+                })
+            }).then((response) => {
+                if (response.status !== 200) {
+                    console.log(`Response status was not 200: ${response.status}`);
+                    return ;
+                }
+                response.json().then( (data) => {
+                    render_cards(data);
+                })
+            })
+        }
     }
-
+    
 </script>
 <style>
     #add_button {

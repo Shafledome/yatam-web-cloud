@@ -142,6 +142,18 @@ def show_graffities():
             return render_template('graffiti_list.html', title='YATAM - Graffities')
 
 
+@app.route('/graffities/search', methods=['POST'])
+def search_graffities():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        req = request.get_json()
+        graffities = Graffiti.search_by_description(req)
+        return Response(response=json.dumps(graffities, default=lambda o: o.encode(), indent=4),
+                        status=200,
+                        mimetype=mimetype)
+
+
 @app.route('/leisuresFromUsers', methods=['GET'])
 def show_leisures_from_users():
     if 'current_user_uid' not in session:
