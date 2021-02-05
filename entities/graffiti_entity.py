@@ -70,6 +70,16 @@ class Graffiti:
         db.delete(Graffiti.entry, key)
         return 'Data deleted.'
 
+    @staticmethod
+    def search_by_description(part):
+        result = []
+        graffities = db.get_dict(Graffiti.entry)
+        for key, value in graffities.items():
+            if(part in value.get('description')):
+                result.append(Graffiti(key=value.get('key'), description=value.get('description'), n_likes=value.get('nlikes'),
+                                   url=value.get('url'), user=User.get_by_uid(value.get('user'))))
+        return result
+
 
 if __name__ == '__main__':
     print('prueba')

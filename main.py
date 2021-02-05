@@ -142,6 +142,18 @@ def show_graffities():
             return render_template('graffiti_list.html', title='YATAM - Graffities')
 
 
+@app.route('/graffities/search', methods=['POST'])
+def search_graffities():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        req = request.get_json()
+        graffities = Graffiti.search_by_description(req)
+        return Response(response=json.dumps(graffities, default=lambda o: o.encode(), indent=4),
+                        status=200,
+                        mimetype=mimetype)
+
+
 @app.route('/leisuresFromUsers', methods=['GET'])
 def show_leisures_from_users():
     if 'current_user_uid' not in session:
@@ -203,10 +215,11 @@ def like_rating():
             r_Id = request.form['id']
             l_Id = int(request.form['leisure'])
             l_type = request.form['type']
-            n_likes = int(request.form['nlikes']) + 1
+            n_likes = int(request.form['nlikes'])
             user = session['current_user_uid']
-            data = {"n_likes": n_likes}
-            Rating.update_rating(r_Id, data)
+            #data = {"n_likes": n_likes}
+            #Rating.update_rating(r_Id, data)
+            Rating.like_rating(r_Id, user, n_likes)
             return redirect(url_for('show_leisure', id=l_Id, type=l_type))
 
 
