@@ -1,5 +1,53 @@
 {% extends 'base.html'%}
 {% block content %}
-{{key}}
+<div class="block"></div>
+<div class="columns">
+    <div class="column is-8 is-offset-2">
+        <div class="box">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        <img src={{ leisure.url_photo }}/>
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-48x48">
+                                <img src={{ leisure.user.profile_picture }}>
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <p class="title is-4 has-text-grey-darker">{{ leisure.user.display_name }}</p>
+                            <p class="subtitle is-6 has-text-grey">{{ leisure.user.email }}</p>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="columns">
+                            <div class="column is-10">
+                                <p class="title is-4 has-text-grey-darker">
+                                    {{ leisure.name }}
+                                </p>
+                                <p>
+                                    {{ leisure.description }}
+                                </p>
+                                    {{ leisure.address }}
+                                <br/>
+                                    {{ leisure.schedule }}
+                                </div>
+                            {% if leisure.user.uid == session.get('current_user_uid') %}
+                                <a class="button is-text" onclick="">Editar</a>
+                                <a class="button is-text" onclick="">Borrar</a>
+                            {% else %}
 
+                            {% endif %}
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+    </div>
+</div>
 {% endblock %}

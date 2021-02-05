@@ -260,8 +260,12 @@ def show_graffiti():
 
 @app.route('/leisure/user')
 def show_leisure_user():
-    key_leisure = request.args.get('key')
-    return render_template('leisure_user.html', key=key_leisure)
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        key = str(request.args.get('key'))
+        leisure = UserLeisure.get_by_key(key)
+        return render_template('leisure_user.html', leisure=leisure, title='YATAM - View Leisure')
 
 
 @app.route('/events', methods=['GET'])

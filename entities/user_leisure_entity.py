@@ -2,6 +2,7 @@ import os
 import sys
 import utils.key_gen as keygen
 import utils.db as db
+from entities.user_entity import User
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -30,7 +31,7 @@ class UserLeisure:
         for key, value in leisures.items():
             result.append(UserLeisure(key=value.get('key'), description=value.get('description'),
                                       name=value.get('name'), url_photo=value.get('url_photo'),
-                                      schedule=value.get('schedule'), user=value.get('user'),
+                                      schedule=value.get('schedule'), user=User.get_by_uid(value.get('user')),
                                       coordinates=value.get('coordinates'), address=value.get('address')))
         return result
 
@@ -38,7 +39,7 @@ class UserLeisure:
     def get_by_key(key):
         leisure = db.get_dict(UserLeisure.entry + '/' + key)
         return UserLeisure(key=leisure['key'], description=leisure['description'], name=leisure['name'],
-                           address=leisure['address'], url_photo=leisure['url_photo'], user=leisure['user'],
+                           address=leisure['address'], url_photo=leisure['url_photo'], user=User.get_by_uid(leisure['user']),
                            schedule=leisure['schedule'], coordinates=leisure['coordinates'])
 
     @staticmethod
@@ -46,7 +47,7 @@ class UserLeisure:
         # ordered dictionary to list and getting first element
         graffiti = list(db.get_dict(UserLeisure.entry, order=order, value=value).values())[0]
         return UserLeisure(key=graffiti['key'], description=graffiti['description'], name=graffiti['name'],
-                           address=graffiti['address'], url_photo=graffiti['url_photo'], user=graffiti['user'],
+                           address=graffiti['address'], url_photo=graffiti['url_photo'], user=User.get_by_uid(graffiti['user']),
                            schedule=graffiti['schedule'], coordinates=graffiti['coordinates'])
 
     @staticmethod
@@ -64,7 +65,7 @@ class UserLeisure:
         }
         db.create(UserLeisure.entry + '/' + new_key, data)
         return UserLeisure(key=new_key, description=description, name=name, address=address, url_photo=url_photo,
-                           schedule=schedule, coordinates=coordinates, user=user)
+                           schedule=schedule, coordinates=coordinates, user=User.get_by_uid(user))
 
     @staticmethod
     def update_user_leisure(key, data):
@@ -73,7 +74,7 @@ class UserLeisure:
             db.update(UserLeisure.entry, key, data)
             return UserLeisure(key=key, description=data['description'], name=data['name'], address=data['address'],
                                url_photo=data['url_photo'], schedule=data['schedule'], coordinates=data['coordinates'],
-                               user=data['user'])
+                               user=User.get_by_uid(data['user']))
         else:
             return None
 
