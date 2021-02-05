@@ -1,12 +1,10 @@
 {% extends 'base.html'%}
 {% block content %}
-<div class="block"></div>
 <div class="columns">
     <div class="column is-10 is-offset-1">
-        <div class="box">
             <div class="columns">
                 <div class="container">
-                    <div class="card">
+                    <div class="card" id="profilecard">
                         <div class="section">
                             <div class="columns">
                                 <div class="column is-1">
@@ -48,95 +46,12 @@
                                     {{ session['current_user_email'] }}
                                     </p>
                                 </div>
-                                <div class='column is-2 has-text-centered'>
-                                    <p class='title is-2 has-text-grey'>30</p>
-                                    <p class='title is-3 has-text-grey-darker'>searches</p>
-                                </div>
-                                <div class='column is-2 has-text-centered'>
-                                    <p class='title is-2 has-text-grey'>10</p>
-                                    <p class='title is-3 has-text-grey-darker'>likes</p>
-                                </div>
-                                <div class='column is-2 has-text-centered'>
-                                    <p class='title is-2 has-text-grey'>3</p>
-                                    <p class='title is-3 has-text-grey-darker'>lists</p>
-                                </div>
-                            </div>
-                            <div class="notification is-primary" id="edit-notification" style="display: none;">
-                                <button class="delete"></button>
-                                
-                            </div>
-                        </div>
-                        <div class="section">
-                            <div class='tabs is-boxed is-fullwidth is-medium'>
-                                <ul>
-                                <li class='link'>
-                                    <a>
-                                    <span class='icon'>
-                                        <i class='fas fa-film'></i>
-                                    </span>
-                                    <span>My Leisures</span>
-                                    </a>
-                                </li>
-                                <li class='link'>
-                                    <a>
-                                    <span class='icon'>
-                                        <i class='fas fa-images'></i>
-                                    </span>
-                                    <span>My Graffities</span>
-                                    </a>
-                                </li>
-                                <li class='link'>
-                                    <a>
-                                    <span class='icon'>
-                                        <i class='fa fa-thumbs-up'></i>
-                                    </span>
-                                    <span>My Likes</span>
-                                    </a>
-                                </li>
-                                <li class='link'>
-                                    <a>
-                                    <span class='icon'>
-                                        <i class='fas fa-star'></i>
-                                    </span>
-                                    <span>My Ratings</span>
-                                    </a>
-                                </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
-                    <br><br>
-                    <div class="card">
-                        <div class="section">
-                            <div class='columns is-mobile'>
-                                <div class='column is-3-tablet is-6-mobile'>
-                                <div class='card'>
-                                    <div class='card-image'>
-                                    <figure class='image is-4by3'>
-                                        <img alt='' src='http://placehold.it/300x225'>
-                                    </figure>
-                                    </div>
-                                    <div class='card-content'>
-                                    <div class='content'>
-                                        <span class='tag is-dark subtitle'>#1</span>
-                                        <p>Personal Notes on the Property (can be edited and saved automatically by clicking in and clicking out of text area) - these are unique to the user - they will show up as part of a saved listings' info here - but adding notes to a property does not automatically create a saved listing. Likewise, removing this proeprty from saved listings does not auto remove the notes.</p>
-                                    </div>
-                                    </div>
-                                    <footer class='card-footer'>
-                                    <a class='card-footer-item'>Compare</a>
-                                    <a class='card-footer-item'>Share</a>
-                                    <a class='card-footer-item'>Delete</a>
-                                    </footer>
-                                </div>
-                                <br>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br><br>
                 </div>
             </div>
-        </div>
+            <br><br>
         <br><br>
     </div>
 </div>
@@ -173,4 +88,9 @@
         }
     }
 </script>
+<style>
+    #profilecard {
+        
+    }
+</style>
 {% endblock %}

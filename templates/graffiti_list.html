@@ -65,7 +65,7 @@
 
         data.forEach(element => {
             var string_html = `
-            <a onclick="open_graffiti(${element.key})">
+            <a onclick="open_graffiti('${element.key}')">
                 <div class="card">
                     <div class="card-image">
                         <figure class="image is-4by3">
@@ -87,12 +87,24 @@
     
                         <div class="content">
                             ${element.description}
+            `
+            if (element.user.uid == session.get('current_user_uid')) {
+                string_html +=`
+                    <a class="button is-text" onclick="">Editar</a>
+                    <a class="button is-text" onclick="">Borrar</a>
+                `
+            } else {
+                string_html += `
+                    <a class="button is-primary is-light" onclick=""><i class="far fa-thumbs-up"></i>&nbsp;&nbsp;${ graffiti.n_likes }</a>
+                `
+            }  
+            string_html += `
                         </div>
                     </div>
                 </div>
             </a>
             <br><br>
-            `            
+            `
             finalHTML += string_html;
         });
         box.innerHTML = finalHTML;

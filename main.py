@@ -248,16 +248,14 @@ def create_graffiti():
             return redirect(url_for('show_graffiti', key=graffiti.key))
 
 
-@app.route('/graffiti', methods=['POST'])
+@app.route('/graffiti', methods=['GET'])
 def show_graffiti():
     if 'current_user_uid' not in session:
         return redirect(url_for('start'))
     else:
         key = str(request.args.get('key'))
         graffiti = Graffiti.get_by_key(key)
-        description = graffiti.description
-        nlikes = graffiti.n_likes
-        return render_template('graffiti.html', description=description, nlikes=nlikes)
+        return render_template('graffiti.html', graffiti=graffiti, title='YATAM - View Graffiti')
 
 
 @app.route('/leisure/user')
