@@ -23,6 +23,9 @@ class Event:
         self.specialty = specialty
         self.organizer = organizer
 
+    def encode(self):
+        return self.__dict__
+
     @staticmethod
     def get_all():
         result = []
@@ -40,7 +43,6 @@ class Event:
         # id must be a string, not a number
         events = opendata.parse_csv_data_events()
         event = events.get(e_id)
-        print(event)
         return Event(e_id=event.get('ID_ACTIVIDAD'), name=event.get('NOMBRE'),
                                 description=event.get('DESCRIPCION'), address=event.get('OTROS_LUGARES'),
                                 schedule=event.get('HORARIO'), start_date=event.get('F_INICIO'), end_date=event.get('F_FIN'),
@@ -67,12 +69,28 @@ class Event:
         result = []
         events = opendata.parse_csv_data_events().values()
         for event in events:
-            if value.casefold() in event.get(entry).casefold():
+            if value in event.get(entry):
                 result.append(Event(e_id=event.get('ID_ACTIVIDAD'), name=event.get('NOMBRE'),
                                 description=event.get('DESCRIPCION'), address=event.get('OTROS_LUGARES'),
                                 schedule=event.get('HORARIO'), start_date=event.get('F_INICIO'), end_date=event.get('F_FIN'),
                                 url=event.get('DIRECCION_WEB'), email=event.get('E_MAIL'), category=event.get('CATEGORIA'),
                                 specialty=event.get('ESPECIALIDAD'), organizer=event.get('ORGANIZA')))
+        return result
+
+    @staticmethod
+    def search_by_name_or_description(value):
+        # value must be string, not number or others
+        result = []
+        events = opendata.parse_csv_data_events().values()
+        for event in events:
+            if value in event.get('NOMBRE') or value in event.get('DESCRIPCION'):
+                result.append(Event(e_id=event.get('ID_ACTIVIDAD'), name=event.get('NOMBRE'),
+                                    description=event.get('DESCRIPCION'), address=event.get('OTROS_LUGARES'),
+                                    schedule=event.get('HORARIO'), start_date=event.get('F_INICIO'),
+                                    end_date=event.get('F_FIN'),
+                                    url=event.get('DIRECCION_WEB'), email=event.get('E_MAIL'),
+                                    category=event.get('CATEGORIA'),
+                                    specialty=event.get('ESPECIALIDAD'), organizer=event.get('ORGANIZA')))
         return result
 
 
