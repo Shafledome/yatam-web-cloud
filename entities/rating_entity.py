@@ -56,7 +56,7 @@ class Rating:
             'key': new_key,
             'grade': grade,
             'description': str(description),
-            'n_likes': 0,
+            'nlikes': 0,
             'leisure': leisure,
             'user': user
         }
@@ -77,31 +77,6 @@ class Rating:
     def delete_rating(key):
         db.delete(Rating.entry, key)
         return 'Data deleted.'
-
-    @staticmethod
-    def like_rating(rid, uid, n_likes):
-        likes = db.get_dict(Rating.likes_entry)
-        if rid in likes:
-            prev = likes[rid]
-            if uid in prev:
-                db.delete(Rating.likes_entry, rid)
-                n_likes -= 1
-                Rating.update_rating(rid, {'n_likes': n_likes})
-            else:
-                n_likes += 1
-                data = {
-                    uid: 1
-                }
-                db.create(Rating.likes_entry + '/' + rid, data)
-                Rating.update_rating(rid, {'n_likes': n_likes})
-        else:
-            n_likes += 1
-            data = {
-                uid: 1
-            }
-            db.create(Rating.likes_entry + '/' + rid, data)
-            Rating.update_rating(rid, {'n_likes': n_likes})
-        return None
 
 
 if __name__ == '__main__':

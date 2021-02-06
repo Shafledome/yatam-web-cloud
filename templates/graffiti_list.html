@@ -1,27 +1,47 @@
 {% extends 'base.html'%}
-{% block content %}    
-<div class="block"></div>
-<div class="columns">
-    <div class="column is-8 is-offset-2">
-        <div class="box">
-            <p class="title is-4 has-text-grey-darker">Search Graffities by their description</p>
-            <input class="input is-primary" id="search" type="text" onchange="filter_description()" placeholder="Enter text to search">
-            <br><br>
+{% block content %}
+<div class="container is-fluid">
+    <div class="columns">
+        <div class="column is-8 is-offset-2">
+            <div class="box" id="primaryBox">
+                <p class="title is-4 has-text-grey-darker">Search Graffities by their description</p>
+                <input class="input is-primary" id="search" type="text" onchange="filter_description()" placeholder="Enter text to search">
+                <br><br>
+            </div>
         </div>
     </div>
-</div>
-<div class="columns">
-    <div class="column is-8 is-offset-2">
-        <div class="box" id="mainBox">
-            
+    <div class="columns" id="mainColums">
+        <div class="column is-8 is-offset-2">
+            <div class="box" id="mainBox">
+                <progress class="progress is-danger" max="100">30%</progress>
+            </div>
         </div>
+        <a href="/graffiti/create" class="button is-primary is-light is-large" id="add_button">Add New Graffiti</a>
+        <a class="button is-danger is-large" id="top_button"onclick="top_function()">To the Top</a>
     </div>
-    <a href="/graffiti/create" class="button is-danger is-large" id="add_button">Add New Graffiti</a>
+    <br><br>
 </div>
 <script>
+    window.onscroll = () => {scroll_function();}
+
+    function scroll_function() {
+        var top_button = document.getElementById("top_button");
+
+        if (document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20) {
+            top_button.style.display = "block";
+        } else {
+            top_button.style.display = "none";
+        }
+    }
+
+    function top_function() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
     var fromIndex = 0;
     var toIndex = 5;
-    var buscando = false;
     var description = document.querySelector('input');
     description.addEventListener('change', filter_description);
     
@@ -44,7 +64,7 @@
                 return ;
             }
             response.json().then( (data) => {
-                render_cards(data);
+                render_cards(data, true);
             })
         })
     }
@@ -53,10 +73,13 @@
         window.location.href = "/graffiti?key="+key;
     }
     
-    function render_cards(data) {
+    function render_cards(data, typeRender) {
         var box = document.getElementById('mainBox');
+        var primaryBox = document.getElementById('primaryBox');
         var loadMore = document.createElement('a');
         var endOfSearch = document.createElement('p');
+
+        box.innerHTML = '<progress class="progress is-danger" max="100">30%</progress>';
         
         loadMore.onclick = () => {
             charge_new_graffities();
@@ -64,13 +87,9 @@
         };
         loadMore.className = "button is-large is-primary";
         loadMore.innerHTML = "Load more graffities";
+        endOfSearch.className = "title is-4 has-text-danger";
 
-        endOfSearch.innerText = "No graffities with this description"
-        
-        if (buscando)
-        {
-            box.innerHTML = '<progress class="progress is-danger" max="100">30%</progress>';
-        }
+        endOfSearch.innerText = "No graffities with this description";
         
         var finalHTML = '';
         
@@ -107,10 +126,10 @@
             finalHTML += string_html;
         });
         box.innerHTML = finalHTML;
-        if(!buscando)
-        {
+
+        if (typeRender) { // True is charge_new, false es filter
             box.appendChild(loadMore);
-        } else if (buscando && data.length == 0){
+        } else if (!typeRender && data.length == 0) {
             box.appendChild(endOfSearch);
         }
     }
@@ -134,15 +153,26 @@
                     return ;
                 }
                 response.json().then( (data) => {
-                    render_cards(data);
+                    render_cards(data, false);
                 })
             })
+        } else {
+            fromIndex = 0;
+            toIndex = 5;
+            charge_new_graffities();
         }
     }
     
 </script>
 <style>
     #add_button {
+        bottom: 20px;
+        left: 30px;
+        z-index: 99;
+        position: fixed;
+    }
+
+    #top_button {
         bottom: 20px;
         right: 30px;
         z-index: 99;

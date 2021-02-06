@@ -60,8 +60,7 @@ class Graffiti:
         # data must be a dictionary
         if isinstance(data, dict):
             db.update(Graffiti.entry, key, data)
-            return Graffiti(key=key, description=data['description'], n_likes=data['nlikes'],
-                            url=data['url'], user=User.get_by_uid(data['user']))
+            return Graffiti.get_by_key(key)
         else:
             return None
 
@@ -75,7 +74,7 @@ class Graffiti:
         result = []
         graffities = db.get_dict(Graffiti.entry)
         for key, value in graffities.items():
-            if(part in value.get('description')):
+            if part in value.get('description'):
                 result.append(Graffiti(key=value.get('key'), description=value.get('description'), n_likes=value.get('nlikes'),
                                    url=value.get('url'), user=User.get_by_uid(value.get('user'))))
         return result
