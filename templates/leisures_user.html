@@ -1,8 +1,8 @@
 {% extends 'base.html'%}
 {% block content %}    
 <div class="block"></div>
+<div class="container is-fluid">
 <div class="columns">
-    <div class="container is-fluid"
     <div class="column is-8 is-offset-2">
         <div class="box">
             <p class="title is-4 has-text-grey-darker">Search our User Leisures by name</p>
@@ -11,7 +11,7 @@
         </div>
     </div>
     </div>
-</div>
+
 <div class="columns">
     <div class="column is-8 is-offset-2">
         <div class="box" id="mainBox">
@@ -20,6 +20,8 @@
     </div>
     <a href="/leisure/create" class="button is-danger is-large" id="add_button">Add New Leisure</a>
 </div>
+</div>
+
 <script>
     var fromIndex = 0;
     var toIndex = 5;
