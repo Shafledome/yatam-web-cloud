@@ -54,7 +54,7 @@
                                             <form action="/likeincrement" method="POST">
                                             <input type="hidden" name="key" value="{{ leisure.key }}" />
                                             <input type="hidden" name="type" value="USER" />
-                                            <button type='submit' class="button is-primary is-light"">
+                                            <button type='submit' class="button is-primary is-light">
                                             <i class="far fa-thumbs-up"></i>
                                     &nbsp;&nbsp;      {{ leisure.n_likes }}
                                             </button>
@@ -137,9 +137,11 @@
 
         var salto6 = document.createElement('br');
         var salto7 = document.createElement('br');
+        var espacio = document.createTextNode(`  `);
         padre.appendChild(salto6);
         padre.appendChild(salto7);
         padre.appendChild(botonConfirmar);
+        padre.appendChild(espacio);
         padre.appendChild(botonCancelar);
 
 

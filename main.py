@@ -256,7 +256,7 @@ def like_increment():
             elif like_type == 'USER':
                 key = request.form['key']
                 Like.like_increase_decrease(like_type, key, session.get('current_user_uid'))
-                return redirect('leisure/user?id=' + key)
+                return redirect('leisure/user?key=' + key)
             elif like_type == 'GRAFFITI':
                 # todo
                 print('todo')
@@ -269,7 +269,7 @@ def create_leisure():
         redirect(url_for('start'))
     else:
         if request.method == 'GET':
-            return render_template('create_leisure.html')
+            return render_template('create_leisure.html', title='YATAM - Create User Leisure')
         elif request.method == 'POST':
             name = request.form['name']
             coordinates = request.form['coordinates']
