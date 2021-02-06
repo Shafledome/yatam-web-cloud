@@ -11,6 +11,8 @@ theaterJSON = 'https://datosabiertos.malaga.eu/recursos/urbanismoEInfraestructur
 
 events2020CSV = 'https://datosabiertos.malaga.eu/datastore/dump/7f96bcbb-020b-449d-9277-1d86bd11b827'
 
+weatherJSON = 'https://api.climacell.co/v3/weather/realtime?lat=-4.4212655&lon=36.721261&unit_system=si&fields=temp%2Cfeels_like%2Cprecipitation%2Chumidity%2Cwind_speed%2Cweather_code&apikey=EYH8w3fFjccLUcI6IFU1M443pSc5pIfI'
+
 
 def download_open_data_json(url):
     response = requests.get(url)
@@ -59,6 +61,20 @@ def parse_json_data(leisure_type: str):
         schedule = feature['properties']['HORARIOS']
         data = {'id': id_leisure, 'name': name, 'description': description, 'type': leisure_type.lower(), 'address': address, 'url': url, 'email': email, 'schedule': schedule, 'coordinates': [latitude, longitude]}
         result[id_leisure] = data
+
+    return result
+
+
+def parse_json_data_weather():
+    data = download_open_data_json(weatherJSON)
+
+    temp = data['temp']['value']
+    feels_like = data['feels_like']['value']
+    wind_speed = data['wind_speed']['value']
+    humidity = data['humidity']['value']
+    precipitation = data['precipitation']['value']
+    weather_code = data['weather_code']['value']
+    result = {'temp': temp, 'feels_like': feels_like, 'wind_speed': wind_speed, 'humidity': humidity, 'precipitation': precipitation, 'weather_code': weather_code}
 
     return result
 

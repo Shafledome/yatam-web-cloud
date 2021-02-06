@@ -9,6 +9,7 @@ from entities.graffiti_entity import Graffiti
 from entities.leisure_entity import Leisure
 from entities.rating_entity import Rating
 from entities.user_leisure_entity import UserLeisure
+from entities.weather_entity import Weather
 from dotenv import load_dotenv
 
 import os

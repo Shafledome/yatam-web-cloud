@@ -1,42 +1,25 @@
 {% extends 'base.html'%}
 {% block content %}
-
-<div class="dropdown is-right is-hoverable">
-  <div class="dropdown-trigger">
-    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-      <figure class="image is-24x24">
-          <img :src="getImage(weather_code)" alt="Image" style="margin-left: -10px">
+<div class="block"></div>
+<div class="column is-8 is-offset-2">
+  <div class="box">
+    <article class="media">
+      <div class="media-left">
+        <figure class="image is-64x64">
+          <img class="image1" src='static/clear.svg' alt="Image">
         </figure>
-        <span> {{ temp }} ºC <small>Sensación {{ feels_like }} ºC</small></span>
-      <span class="icon is-small">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-    <div class="dropdown-content">
-      <div class="dropdown-item">
-        <p>Precipitación {{ precipitation }}mm/hr <br> Humedad {{humidity}}% <br> Viento {{ wind_speed }}m/s</p> <!-- TODO mostrar los datos recogidos en el json de la funcion getWeather -->
       </div>
-    </div>
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <strong>{{ w.temp }} ºC</strong> {{w.feels_like }} ºC
+            <br>
+            <small>{{ w.wind_speed }} m/s {{ w.humidity }} % {{ w.precipitation }} mm/hr</small>
+          </p>
+        </div>
+      </div>
+    </article>
   </div>
 </div>
-
-<script>
-function getWeather() {
-  fetch("https://api.climacell.co/v3/weather/realtime?lat=-4.4212655&lon=36.721261&unit_system=si&fields=temp%2Cfeels_like%2Cprecipitation%2Chumidity%2Cwind_speed%2Cweather_code&apikey=EYH8w3fFjccLUcI6IFU1M443pSc5pIfI", {
-  "method": "GET",
-  "headers": {}
-})
-.then(response => {
-  //console.log(response);
-})
-.catch(err => {
-  //console.error(err);
-});
-}
-
-<!-- TODO funcion getImage-->
-</script>
 
 {% endblock %}
