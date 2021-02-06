@@ -327,5 +327,36 @@ def show_events():
         return render_template('events.html', title='YATAM - Events 2020')
 
 
+@app.route('/event', methods=['GET'])
+def show_event():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        e_Id = (request.args.get('id'))
+        event = Event.get_by_id(e_Id)
+        return render_template('event.html', e=event, title='YATAM - ' + event.name)
+
+
+@app.route('/events/search', methods=['POST'])
+def search_events():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        req = request.get_json()
+        events = Event.search_by_name_or_description(req)
+        return Response(response=json.dumps(events, default=lambda o: o.encode(), indent=4),
+                        status=200,
+                        mimetype=mimetype)
+
+
+@app.route('/weather', methods=['GET'])
+def show_weather():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        weather = Weather.get_weather()
+        return render_template('weather.html', w=weather, title='YATAM - Weather')
+
+
 if __name__ == '__main__':
     app.run(host='localhost', port='5000', debug=True)
