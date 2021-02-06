@@ -26,14 +26,43 @@
                     <div class="content">
                         <div class="columns">
                             <div class="column is-10">
-                                {{ graffiti.description }}
+                                <div id="description">
+                                    {{ graffiti.description }}
+                                </div>
+                                <input type="hidden" name="graffiti_key" value="{{ graffiti.key }}" />
+                                <input type="hidden" name="graffiti_description" value="{{ graffiti.description }}" />
                             </div>
-                            {% if graffiti.user.uid == session.get('current_user_uid') %}
-                                <a class="button is-text" onclick="">Editar</a>
-                                <a class="button is-text" onclick="">Borrar</a>
-                            {% else %}
-                                <a class="button is-primary is-light" onclick=""><i class="far fa-thumbs-up"></i>&nbsp;&nbsp;{{ graffiti.n_likes }}</a>
-                            {% endif %}
+                            <div id="buttons">
+                                {% if graffiti.user.uid == session.get('current_user_uid') %}
+                                    <div class="level-right">
+                                        <button class="button is-text" onclick="editGraffiti()">Edit</button>
+                                        <form action="/graffiti/delete" method="POST">
+                                            <input type="hidden" name="key" value="{{ graffiti.key }}" />
+                                            <button type="submit" class="button is-text">Delete</a>
+                                        </form>
+                                    </div>
+                                {% else %}
+                                    {% if check_like(graffiti.key) %}
+                                        <form action="/likeincrement" method="POST">
+                                            <input type="hidden" name="key" value="{{ graffiti.key }}" />
+                                            <input type="hidden" name="type" value="GRAFFITI" />
+                                            <button type='submit' class="button is-primary is-light"">
+                                                <i class="fas fa-thumbs-up"></i>
+                                                &nbsp;&nbsp;{{ graffiti.n_likes }}
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <form action="/likeincrement" method="POST">
+                                            <input type="hidden" name="key" value="{{ graffiti.key }}" />
+                                            <input type="hidden" name="type" value="GRAFFITI" />
+                                            <button type='submit' class="button is-primary is-light"">
+                                                <i class="far fa-thumbs-up"></i>
+                                                &nbsp;&nbsp;{{ graffiti.n_likes }}
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -42,4 +71,24 @@
         <br><br>
     </div>
 </div>
+<script>
+    function editGraffiti() {
+        var descriptionField = document.getElementById('description');
+        var description = document.getElementsByName('graffiti_description')[0].value;
+        var key = document.getElementsByName('graffiti_key')[0].value;
+        var buttons = document.getElementById('buttons');
+        buttons.style.display = 'none';
+
+        descriptionField.innerHTML = `
+            
+                <form action="/graffiti/update" method="POST">
+                    <input class="input" name="description" type="text" value="${description}" />
+                    <input type="hidden" name="key" value="{{ graffiti.key }}" />
+                    <br><br>
+                    <button type="submit" class="button is-primary">Confirm</button>&nbsp;&nbsp;
+                    <a href="/graffiti?key=${key}" class="button is-danger">Cancel</a>
+                </form>
+        `;
+    }
+</script>
 {% endblock %}

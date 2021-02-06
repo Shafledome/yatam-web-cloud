@@ -5,7 +5,7 @@
 <div class="columns">
     <div class="column is-8 is-offset-2">
         <div class="box">
-            <p class="title is-4 has-text-grey-darker">Search our User Leisures by name</p>
+            <p class="title is-4 has-text-grey-darker">Search User Leisures by name</p>
             <input class="input is-primary" id="search" type="text" onchange="filter_name()" placeholder="Enter text to search">
             <br><br>
         </div>
@@ -15,17 +15,37 @@
 <div class="columns">
     <div class="column is-8 is-offset-2">
         <div class="box" id="mainBox">
-
+            <progress class="progress is-danger" max="100">30%</progress>
         </div>
     </div>
-    <a href="/leisure/create" class="button is-danger is-large" id="add_button">Add New Leisure</a>
+    <a href="/leisure/create" class="button is-primary is-light is-large" id="add_button">Add New Leisure</a>
+    <a class="button is-danger is-large" id="top_button"onclick="top_function()" style="display: none;">To the Top</a>
 </div>
+<br><br>
 </div>
 
 <script>
+    window.onscroll = () => {scroll_function();}
+
+    function scroll_function() {
+        var top_button = document.getElementById("top_button");
+
+        if (document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20) {
+            top_button.style.display = "block";
+        } else {
+            top_button.style.display = "none";
+        }
+    }
+
+    function top_function() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+
     var fromIndex = 0;
     var toIndex = 5;
-    var buscando = false;
     var description = document.querySelector('input');
     description.addEventListener('change', filter_name);
 
@@ -48,7 +68,7 @@
                 return ;
             }
             response.json().then( (data) => {
-                render_cards(data);
+                render_cards(data, true);
             })
         })
     }
@@ -57,10 +77,12 @@
         window.location.href = "/leisure/user?key="+key;
     }
 
-    function render_cards(data) {
+    function render_cards(data, typeRender) {
         var box = document.getElementById('mainBox');
         var loadMore = document.createElement('a');
         var endOfSearch = document.createElement('p');
+
+        box.innerHTML = '<progress class="progress is-danger" max="100">30%</progress>';
 
         loadMore.onclick = () => {
             charge_new_leisures();
@@ -68,13 +90,9 @@
         };
         loadMore.className = "button is-large is-primary";
         loadMore.innerHTML = "Load more leisures";
+        endOfSearch.className = "title is-4 has-text-danger";
 
-        endOfSearch.innerText = "No leisures found with this name"
-
-        if (buscando)
-        {
-            box.innerHTML = '<progress class="progress is-danger" max="100">30%</progress>';
-        }
+        endOfSearch.innerText = "No leisures found with this name";
 
         var finalHTML = '';
 
@@ -112,10 +130,10 @@
             finalHTML += string_html;
         });
         box.innerHTML = finalHTML;
-        if(!buscando)
-        {
+
+        if (typeRender) { // True is charge_new, false es filter
             box.appendChild(loadMore);
-        } else if (buscando && data.length == 0){
+        } else if (!typeRender && data.length == 0) {
             box.appendChild(endOfSearch);
         }
     }
@@ -139,15 +157,29 @@
                     return ;
                 }
                 response.json().then( (data) => {
-                    render_cards(data);
+                    render_cards(data, false);
                 })
             })
+        } else {
+            var box = document.getElementById('mainBox');
+            box.innerHTML = '<progress class="progress is-danger" max="100">30%</progress>';
+
+            fromIndex = 0;
+            toIndex = 5;
+            charge_new_leisures();
         }
     }
 
 </script>
 <style>
     #add_button {
+        bottom: 20px;
+        left: 30px;
+        z-index: 99;
+        position: fixed;
+    }
+
+    #top_button {
         bottom: 20px;
         right: 30px;
         z-index: 99;

@@ -230,14 +230,14 @@ def delete_rating():
         return redirect(url_for('show_leisure', id=l_Id, type=l_type))
 
 
-def check_like2(rating_key):
+def check_like(rating_key):
     if Like.check_like_user(rating_key, session.get('current_user_uid')) is None:
         return False
     else:
         return True
 
 
-app.jinja_env.globals.update(check_like=check_like2)
+app.jinja_env.globals.update(check_like=check_like)
 
 
 @app.route('/likeincrement', methods=['POST'])
@@ -258,8 +258,9 @@ def like_increment():
                 Like.like_increase_decrease(like_type, key, session.get('current_user_uid'))
                 return redirect('leisure/user?key=' + key)
             elif like_type == 'GRAFFITI':
-                # todo
-                print('todo')
+                key = request.form['key']
+                Like.like_increase_decrease(like_type, key, session.get('current_user_uid'))
+                return redirect('graffiti?key=' + key)
 
 
 @app.route('/leisure/create', methods=['GET', 'POST'])
@@ -308,6 +309,30 @@ def show_graffiti():
         key = str(request.args.get('key'))
         graffiti = Graffiti.get_by_key(key)
         return render_template('graffiti.html', graffiti=graffiti, title='YATAM - View Graffiti')
+
+
+@app.route('/graffiti/delete', methods=['POST'])
+def delete_graffiti():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        key = str(request.form['key'])
+        Graffiti.delete_graffiti(key)
+        return redirect(url_for('show_graffities'))
+
+
+@app.route('/graffiti/update', methods=['POST'])
+def update_graffiti():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        key = str(request.form['key'])
+        description = str(request.form['description'])
+        data = {
+            'description': description
+        }
+        Graffiti.update_graffiti(key, data)
+        return redirect('/graffiti?key=' + key)
 
 
 @app.route('/leisure/user')

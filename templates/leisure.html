@@ -241,42 +241,6 @@ function edit(key, editRating) {
     x.style.display = "none";
     y.style.display = "block";
 }
-
-function checkLikeButton(rating_key, nlikes) {
-    fetch(`${window.origin}/checklike`, {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify({r_key: rating_key}),
-            cache: 'no-cache',
-            headers: new Headers({
-                'content-type': 'application/json'
-            })
-    }).then((response) => {
-        if (response.status !== 200) {
-            console.log(`Response status was not 200: ${response.status}`);
-            return ;
-        }
-        response.json().then( (data) => {
-            var likeField = document.getElementById("likebutton");
-
-            if (data['response'] == 'yes') {
-                likeField.innerHTML = `
-                <a class="button is-primary is-light" onclick="likeButton()">
-                    <i class="fas fa-thumbs-up"></i>
-                    &nbsp;&nbsp;${nlikes}
-                </a>
-                `
-            } else {
-                likeField.innerHTML = `
-                <a class="button is-primary is-light" onclick="likeButton()">
-                    <i class="far fa-thumbs-up"></i>
-                    &nbsp;&nbsp;${nlikes}
-                </a>
-                `
-            }
-        })
-    })
-}
 </script>
 
 {% endblock %}

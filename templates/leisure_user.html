@@ -33,10 +33,10 @@
                             <input type="hidden" value="{{leisure.key}}" id="leisure_key">
                             {% if leisure.user.uid == session.get('current_user_uid') %}
                             <div id="botones" class="level-right">
-                                <button id="editar" class="button is-text" onclick=editar()>Editar</button>
+                                <button id="editar" class="button is-text" onclick=editar()>Edit</button>
                                 <form id="formEliminar" action="/leisure/user/delete" method="POST">
                                     <input type="hidden" name="key" value="{{leisure.key}}">
-                                    <button id="eliminar" class="button is-text" type="submit">Borrar</button>
+                                    <button id="eliminar" class="button is-text" type="submit">Delete</button>
                                 </form>
                                 </div>
                             {% else %}
@@ -113,9 +113,9 @@
         var botonCancelar = document.createElement('button');
         var key = document.getElementById("leisure_key").value;
         botonCancelar.setAttribute("class", "button is-danger");
-        botonCancelar.textContent = "Cancelar";
+        botonCancelar.textContent = "Cancel";
         botonConfirmar.setAttribute("class", "button is-primary");
-        botonConfirmar.textContent = "Confirmar";
+        botonConfirmar.textContent = "Confirm";
         botonConfirmar.onclick = function (){
 
             var request = new XMLHttpRequest();
