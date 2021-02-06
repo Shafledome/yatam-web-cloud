@@ -21,6 +21,7 @@
 <script>
     var fromIndex = 0;
     var toIndex = 5;
+    var buscando = false;
     var description = document.querySelector('input');
     description.addEventListener('change', filter_description);
     
@@ -55,6 +56,7 @@
     function render_cards(data) {
         var box = document.getElementById('mainBox');
         var loadMore = document.createElement('a');
+        var endOfSearch = document.createElement('p');
         
         loadMore.onclick = () => {
             charge_new_graffities();
@@ -62,8 +64,8 @@
         };
         loadMore.className = "button is-large is-primary";
         loadMore.innerHTML = "Load more graffities";
-        
-        box.innerHTML = '<progress class="progress is-danger" max="100">30%</progress>';
+
+        endOfSearch.innerText = "No graffities with this description"
         
         var finalHTML = '';
         
@@ -100,11 +102,17 @@
             finalHTML += string_html;
         });
         box.innerHTML = finalHTML;
-        box.appendChild(loadMore);
+        if(!buscando)
+        {
+            box.appendChild(loadMore);
+        } else if (buscando && data.length == 0){
+            box.appendChild(endOfSearch);
+        }
     }
     
     function filter_description(e) {
         description = e.target.value;
+        buscando = true;
         if (description != "")
         {
             fetch(`${window.origin}/graffities/search`, {
