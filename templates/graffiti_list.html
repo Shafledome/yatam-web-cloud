@@ -13,7 +13,7 @@
 <div class="columns">
     <div class="column is-8 is-offset-2">
         <div class="box" id="mainBox">
-            <progress class="progress is-danger" max="100">30%</progress>
+            
         </div>
     </div>
     <a href="/graffiti/create" class="button is-danger is-large" id="add_button">Add New Graffiti</a>
@@ -66,6 +66,11 @@
         loadMore.innerHTML = "Load more graffities";
 
         endOfSearch.innerText = "No graffities with this description"
+        
+        if (buscando)
+        {
+            box.innerHTML = '<progress class="progress is-danger" max="100">30%</progress>';
+        }
         
         var finalHTML = '';
         
