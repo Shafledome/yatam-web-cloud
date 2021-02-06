@@ -1,6 +1,8 @@
 from flask_cors import CORS
 from flask import Flask, render_template, request, redirect, url_for, Response, session
 from datetime import datetime
+
+from entities.like_entity import Like
 from entities.user_entity import User
 from entities.event_entity import Event
 from entities.graffiti_entity import Graffiti
@@ -206,21 +208,29 @@ def delete_rating():
         return redirect(url_for('show_leisure', id=l_Id, type=l_type))
 
 
-@app.route('/likerating', methods=['GET', 'POST'])
-def like_rating():
+def check_like2(rating_key):
+    if Like.check_like_user(rating_key, session.get('current_user_uid')) is None:
+        return False
+    else:
+        return True
+
+
+app.jinja_env.globals.update(check_like=check_like2)
+
+
+@app.route('/likeincrement', methods=['POST'])
+def like_increment():
     if 'current_user_uid' not in session:
         return redirect(url_for('start'))
     else:
         if request.method == 'POST':
-            r_Id = request.form['id']
-            l_Id = int(request.form['leisure'])
-            l_type = request.form['type']
-            n_likes = int(request.form['nlikes'])
-            user = session['current_user_uid']
-            #data = {"n_likes": n_likes}
-            #Rating.update_rating(r_Id, data)
-            Rating.like_rating(r_Id, user, n_likes)
-            return redirect(url_for('show_leisure', id=l_Id, type=l_type))
+            like_type = request.form['type']
+            key = request.form['key']
+            leisure_key = request.form['id']
+            leisure_type = request.form['leisure']
+            Like.like_increase_decrease(like_type, key, session.get('current_user_uid'))
+
+            return redirect('/leisure?id='+leisure_key+'&type='+leisure_type)
 
 
 @app.route('/leisure/create', methods=['GET', 'POST'])

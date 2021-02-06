@@ -108,20 +108,30 @@
                     </div>
                     {% else %}
                     <div class="level-right">
-                        {{ r.n_likes }}
-                        &nbsp;
-                        <div class="field is-grouped">
-                            <form action="/likerating" method="POST">
-                                <input type="hidden" name="id" value="{{ r.key }}" />
-                                <input type="hidden" name="leisure" value="{{ l.l_id }}" />
-                                <input type="hidden" name="type" value="{{ l.leisure_type }}" />
-                                <input type="hidden" name="nlikes" value="{{ r.n_likes }}" />
-                                <button class="button is-text" type="submit">
-                                    <span class="icon is-small">
-                                        <i class="far fa-thumbs-up"></i>
-                                    </span>
+                        <div id="likebutton">
+                            {% if check_like(r.key) %}
+                            <form action="/likeincrement" method="POST">
+                                <input type="hidden" name="key" value="{{ r.key }}" />
+                                <input type="hidden" name="type" value="RATING" />
+                                <input type="hidden" name="leisure" value="{{ l.leisure_type }}" />
+                                <input type="hidden" name="id" value="{{ l.l_id }}" />
+                                <button type='submit' class="button is-primary is-light"">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    &nbsp;&nbsp;{{ r.n_likes }}
                                 </button>
                             </form>
+                            {% else %}
+                            <form action="/likeincrement" method="POST">
+                                <input type="hidden" name="key" value="{{ r.key }}" />
+                                <input type="hidden" name="type" value="RATING" />
+                                <input type="hidden" name="leisure" value="{{ l.leisure_type }}" />
+                                <input type="hidden" name="id" value="{{ l.l_id }}" />
+                                <button type='submit' class="button is-primary is-light"">
+                                    <i class="far fa-thumbs-up"></i>
+                                    &nbsp;&nbsp;{{ r.n_likes }}
+                                </button>
+                            </form>
+                            {% endif %}
                         </div>
                     </div>
                     {% endif %}
@@ -232,7 +242,41 @@ function edit(key, editRating) {
     y.style.display = "block";
 }
 
+function checkLikeButton(rating_key, nlikes) {
+    fetch(`${window.origin}/checklike`, {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({r_key: rating_key}),
+            cache: 'no-cache',
+            headers: new Headers({
+                'content-type': 'application/json'
+            })
+    }).then((response) => {
+        if (response.status !== 200) {
+            console.log(`Response status was not 200: ${response.status}`);
+            return ;
+        }
+        response.json().then( (data) => {
+            var likeField = document.getElementById("likebutton");
 
+            if (data['response'] == 'yes') {
+                likeField.innerHTML = `
+                <a class="button is-primary is-light" onclick="likeButton()">
+                    <i class="fas fa-thumbs-up"></i>
+                    &nbsp;&nbsp;${nlikes}
+                </a>
+                `
+            } else {
+                likeField.innerHTML = `
+                <a class="button is-primary is-light" onclick="likeButton()">
+                    <i class="far fa-thumbs-up"></i>
+                    &nbsp;&nbsp;${nlikes}
+                </a>
+                `
+            }
+        })
+    })
+}
 </script>
 
 {% endblock %}

@@ -31,7 +31,7 @@ class Rating:
     @staticmethod
     def get_by_key(key):
         rating = db.get_dict(Rating.entry + '/' + key)
-        return Rating(key=rating['key'], grade=rating['grade'], description=rating['description'], n_likes=rating['n_likes'], leisure=rating['leisure'], user=rating['user'])
+        return Rating(key=rating['key'], grade=rating['grade'], description=rating['description'], n_likes=rating['nlikes'], leisure=rating['leisure'], user=rating['user'])
 
     @staticmethod
     def get_rating(order=None, value=None):
@@ -41,14 +41,12 @@ class Rating:
 
     @staticmethod
     def get_ratings_by_leisure(order=None, value=None):
-        #rating = list(db.get_dict(Rating.entry, order=order, value=value).values())
         ratings = db.get_dict(Rating.entry, order=order, value=value)
         result = []
         if ratings:
             for key, value in ratings.items():
-                result.append(Rating(key=value.get('key'), grade=value.get('grade'), description=value.get('description'), n_likes=value.get('n_likes'),
+                result.append(Rating(key=value.get('key'), grade=value.get('grade'), description=value.get('description'), n_likes=value.get('nlikes'),
                                  leisure=value.get('url'), user=User.get_by_uid(value.get('user'))))
-            #rating = list(db.get_dict(Rating.entry, order=order, value=value).values())
         return result
         
     @staticmethod
@@ -83,7 +81,6 @@ class Rating:
     @staticmethod
     def like_rating(rid, uid, n_likes):
         likes = db.get_dict(Rating.likes_entry)
-        print(likes)
         if rid in likes:
             prev = likes[rid]
             if uid in prev:
@@ -104,8 +101,6 @@ class Rating:
             }
             db.create(Rating.likes_entry + '/' + rid, data)
             Rating.update_rating(rid, {'n_likes': n_likes})
-        
-        
         return None
 
 
