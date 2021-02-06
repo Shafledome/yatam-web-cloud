@@ -84,7 +84,7 @@ class UserLeisure:
             return None
 
     @staticmethod
-    def delete_rating(key):
+    def delete_leisure(key):
         db.delete(UserLeisure.entry, key)
         return 'Data deleted.'
 

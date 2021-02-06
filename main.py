@@ -327,5 +327,31 @@ def show_events():
         return render_template('events.html', title='YATAM - Events 2020')
 
 
+@app.route('/leisure/user/delete', methods=['POST'])
+def delete_user_leisure():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        key = request.form['key']
+        UserLeisure.delete_leisure(key)
+        return redirect(url_for('show_leisures_from_users'))
+
+
+@app.route('/leisure/user/update', methods=['POST'])
+def update_user_leisure():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        key = request.form['key']
+        name = request.form['name']
+        description = request.form['description']
+        leisure = UserLeisure.get_by_key(key);
+        data = {"name": name, "description": description, "key": key, "address": leisure.address,
+                "url_photo": leisure.url_photo, "schedule": leisure.schedule, "coordinates": leisure.coordinates,
+                "user": leisure.user.uid, "nlikes": leisure.n_likes}
+        UserLeisure.update_user_leisure(key, data)
+        return Response(response=json.dumps({"Success": "Leisure updated"}), status=200, mimetype=mimetype)
+
+
 if __name__ == '__main__':
     app.run(host='localhost', port='5000', debug=True)

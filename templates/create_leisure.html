@@ -52,7 +52,7 @@
           <button class="button is-primary" onclick=crearLeisure()>Submit</button>
         </div>
         <div class="control">
-          <button class="button is-primary is-light">Cancel</button>
+          <button class="button is-primary is-light" onclick=goBack()>Cancel</button>
         </div>
       </div>
     </div>
@@ -99,6 +99,10 @@
                 request.setRequestHeader('Access-Control-Allow-Origin', '*');
                 request.send(`name=${name.value}&coordinates=${coordinates.value}&description=${description.value}&photo=${url_photo}&schedule=${schedule.value}&address=${address.value}`);
         }
+    }
+
+    function goBack(){
+      window.history.back();
     }
 </script>
 

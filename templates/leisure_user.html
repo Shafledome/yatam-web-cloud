@@ -27,14 +27,19 @@
                             <div class="column is-8" id="padre">
                                 <p class="title is-4 has-text-grey-darker" id="name">{{ leisure.name }}</p>
                                 <p id="descripcion">{{ leisure.description }}</p>
-                                    {{ leisure.address }}
-                                <br/>
+                                <div id="address">{{ leisure.address }}</div>
+                                        <br/>
                                     {{ leisure.schedule }}
                                 </div>
+                            <input type="hidden" value="{{leisure.key}}" id="leisure_key">
                             {% if leisure.user.uid == session.get('current_user_uid') %}
-                                <a class="button is-text" onclick=editar()>Editar</a>
-                                <a class="button is-text" onclick=borrar()>Borrar</a>
-
+                            <div class="level-right" id="botones">
+                                <button id="editar" class="button is-text" onclick=editar()>Editar</button>
+                                <form id="formEliminar" action="/leisure/user/delete" method="POST">
+                                    <input type="hidden" name="key" value="{{leisure.key}}">
+                                    <button id="eliminar" class="button is-text" type="submit">Borrar</button>
+                                </form>
+                                </div>
                             {% else %}
                                 <div class="level-right">
                                     <div id="likebutton">
@@ -71,40 +76,75 @@
 </div>
 
 <script>
-    function borrar(){
-            var request = new XMLHttpRequest();
-            request.onreadystatechange = () => {
-                    if (request.readyState == XMLHttpRequest.DONE && request.status ==200) {
-                        window.location.href="/leisuresFromUsers";
-                    }
-                };
-                request.open('POST', '/leisure/user/delete', true);
-                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
-                request.setRequestHeader('Access-Control-Allow-Origin', '*');
-                request.send(`key=${leisure.key}`);
-
-    }
-
 
     function editar(){
         var padre = document.getElementById("padre");
         var descripcion = document.getElementById("descripcion");
         var name = document.getElementById("name");
+        var address = document.getElementById("address")
+        var padreBotones = document.getElementById("botones");
+        var botonEdit = document.getElementById("editar");
+        var botonDelete = document.getElementById("formEliminar");
+
         var inputName = document.createElement('input');
-        var salto = document.createElement('br');
         inputName.type ='text';
         inputName.setAttribute("id", "inputText");
         inputName.setAttribute("value", name.textContent)
-        inputName.appendChild(salto);
 
-        var inputDescripcion = document.createElement('textarea');
-        inputDescripcion.setAttribute("id", "inputDescripcion")
-        inputDescripcion.setAttribute("value", descripcion.textContent)
-        inputDescripcion.appendChild(salto);
+        var inputDescripcion = document.createElement('input');
+        inputDescripcion.type='text';
+        inputDescripcion.setAttribute("id", "inputDescripcion");
+        inputDescripcion.setAttribute("value", descripcion.textContent);
 
+        var salto = document.createElement('br');
+        var salto2 = document.createElement('br');
+        var salto3 = document.createElement('br');
+        var salto4 = document.createElement('br');
         padre.replaceChild(inputName, name);
         padre.replaceChild(inputDescripcion, descripcion);
+        padre.insertBefore(salto, inputDescripcion);
+        padre.insertBefore(salto2, salto);
+        padre.insertBefore(salto3, address);
+        padre.insertBefore(salto4, salto3);
+
+        padreBotones.removeChild(botonEdit);
+        padreBotones.removeChild(botonDelete);
+
+        var botonConfirmar = document.createElement('button');
+        var botonCancelar = document.createElement('button');
+        var key = document.getElementById("leisure_key").value;
+        botonCancelar.setAttribute("class", "button is-danger");
+        botonCancelar.textContent = "Cancelar";
+        botonConfirmar.setAttribute("class", "button is-primary");
+        botonConfirmar.textContent = "Confirmar";
+        botonConfirmar.onclick = function (){
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = () => {
+                    if (request.readyState == XMLHttpRequest.DONE && request.status ==200) {
+                       window.location.href="/leisure/user?key="+key;
+                    }
+                };
+                request.open('POST', '/leisure/user/update', true);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+                request.setRequestHeader('Access-Control-Allow-Origin', '*');
+                request.send(`key=${key}&name=${inputName.value}&description=${inputDescripcion.value}`);
+        }
+
+
+        botonCancelar.onclick = function (){
+            window.location.reload();
+        }
+
+        var salto6 = document.createElement('br');
+        var salto7 = document.createElement('br');
+        padre.appendChild(salto6);
+        padre.appendChild(salto7);
+        padre.appendChild(botonConfirmar);
+        padre.appendChild(botonCancelar);
+
 
     }
+
 </script>
 {% endblock %}
