@@ -77,9 +77,7 @@ class UserLeisure:
         # data must be a dictionary
         if isinstance(data, dict):
             db.update(UserLeisure.entry, key, data)
-            return UserLeisure(key=key, description=data['description'], name=data['name'], address=data['address'],
-                               url_photo=data['url_photo'], schedule=data['schedule'], coordinates=data['coordinates'],
-                               user=User.get_by_uid(data['user']), n_likes=data['nlikes'])
+            return UserLeisure.get_by_key(key)
         else:
             return None
 

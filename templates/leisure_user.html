@@ -24,16 +24,15 @@
                     </div>
                     <div class="content">
                         <div class="columns">
-                            <div class="column is-8" id="padre">
+                            <div class="column is-10" id="padre">
                                 <p class="title is-4 has-text-grey-darker" id="name">{{ leisure.name }}</p>
                                 <p id="descripcion">{{ leisure.description }}</p>
-                                <div id="address">{{ leisure.address }}</div>
+                                <p id="address">{{ leisure.address }}</p>
                                         <br/>
                                     {{ leisure.schedule }}
-                                </div>
                             <input type="hidden" value="{{leisure.key}}" id="leisure_key">
                             {% if leisure.user.uid == session.get('current_user_uid') %}
-                            <div class="level-right" id="botones">
+                            <div id="botones" class="level-right">
                                 <button id="editar" class="button is-text" onclick=editar()>Editar</button>
                                 <form id="formEliminar" action="/leisure/user/delete" method="POST">
                                     <input type="hidden" name="key" value="{{leisure.key}}">
@@ -41,13 +40,12 @@
                                 </form>
                                 </div>
                             {% else %}
-                                <div class="level-right">
-                                    <div id="likebutton">
+                                    <div id="likebutton" class="level-right">
                                         {% if check_like(leisure.key) %}
                                             <form action="/likeincrement" method="POST">
                                                 <input type="hidden" name="key" value="{{ leisure.key }}" />
                                                 <input type="hidden" name="type" value="USER" />
-                                                <button type='submit' class="button is-primary is-light"">
+                                                <button type='submit' class="button is-primary is-light">
                                                 <i class="fas fa-thumbs-up"></i>
                                     &nbsp;&nbsp;            {{ leisure.n_likes }}
                                                 </button>
@@ -61,10 +59,11 @@
                                     &nbsp;&nbsp;      {{ leisure.n_likes }}
                                             </button>
                                             </form>
-                                        {% endif %}
                                     </div>
-                                </div>
+                                        {% endif %}
                             {% endif %}
+                                        </div>
+                                </div>
                         </div>
                     </div>
                     </div>
