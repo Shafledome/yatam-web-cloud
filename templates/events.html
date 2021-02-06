@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% block content %}
+<div class="block"></div>
 <div class="columns">
     <div class="column is-8 is-offset-2">
         <div class="box">
@@ -17,9 +18,27 @@
     <div class="box" id="mainBox">
         <progress class="progress is-primary" max="100">30%</progress>
     </div>
+    <a class="button is-danger is-large" id="top_button"onclick="top_function()">To the Top</a>
 </div>
 
 <script>
+    window.onscroll = () => {scroll_function();}
+
+    function scroll_function() {
+        var top_button = document.getElementById("top_button");
+
+        if (document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20) {
+            top_button.style.display = "block";
+        } else {
+            top_button.style.display = "none";
+        }
+    }
+
+    function top_function() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
 
     function search_by_name_or_description(e) {
         if (e !== undefined) {
@@ -103,5 +122,13 @@
     }
 
 </script>
-
+<style>
+    #top_button {
+        display: none;
+        bottom: 20px;
+        right: 30px;
+        z-index: 99;
+        position: fixed;
+    }
+</style>
 {% endblock %}
