@@ -24,22 +24,41 @@
                     </div>
                     <div class="content">
                         <div class="columns">
-                            <div class="column is-10">
-                                <p class="title is-4 has-text-grey-darker">
-                                    {{ leisure.name }}
-                                </p>
-                                <p>
-                                    {{ leisure.description }}
-                                </p>
+                            <div class="column is-8" id="padre">
+                                <p class="title is-4 has-text-grey-darker" id="name">{{ leisure.name }}</p>
+                                <p id="descripcion">{{ leisure.description }}</p>
                                     {{ leisure.address }}
                                 <br/>
                                     {{ leisure.schedule }}
                                 </div>
                             {% if leisure.user.uid == session.get('current_user_uid') %}
-                                <a class="button is-text" onclick="">Editar</a>
-                                <a class="button is-text" onclick="">Borrar</a>
-                            {% else %}
+                                <a class="button is-text" onclick=editar()>Editar</a>
+                                <a class="button is-text" onclick=borrar()>Borrar</a>
 
+                            {% else %}
+                                <div class="level-right">
+                                    <div id="likebutton">
+                                        {% if check_like(leisure.key) %}
+                                            <form action="/likeincrement" method="POST">
+                                                <input type="hidden" name="key" value="{{ leisure.key }}" />
+                                                <input type="hidden" name="type" value="USER" />
+                                                <button type='submit' class="button is-primary is-light"">
+                                                <i class="fas fa-thumbs-up"></i>
+                                    &nbsp;&nbsp;            {{ leisure.n_likes }}
+                                                </button>
+                                            </form>
+                                        {% else %}
+                                            <form action="/likeincrement" method="POST">
+                                            <input type="hidden" name="key" value="{{ leisure.key }}" />
+                                            <input type="hidden" name="type" value="USER" />
+                                            <button type='submit' class="button is-primary is-light"">
+                                            <i class="far fa-thumbs-up"></i>
+                                    &nbsp;&nbsp;      {{ leisure.n_likes }}
+                                            </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             {% endif %}
                         </div>
                     </div>
@@ -50,4 +69,42 @@
         <br><br>
     </div>
 </div>
+
+<script>
+    function borrar(){
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = () => {
+                    if (request.readyState == XMLHttpRequest.DONE && request.status ==200) {
+                        window.location.href="/leisuresFromUsers";
+                    }
+                };
+                request.open('POST', '/leisure/user/delete', true);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+                request.setRequestHeader('Access-Control-Allow-Origin', '*');
+                request.send(`key=${leisure.key}`);
+
+    }
+
+
+    function editar(){
+        var padre = document.getElementById("padre");
+        var descripcion = document.getElementById("descripcion");
+        var name = document.getElementById("name");
+        var inputName = document.createElement('input');
+        var salto = document.createElement('br');
+        inputName.type ='text';
+        inputName.setAttribute("id", "inputText");
+        inputName.setAttribute("value", name.textContent)
+        inputName.appendChild(salto);
+
+        var inputDescripcion = document.createElement('textarea');
+        inputDescripcion.setAttribute("id", "inputDescripcion")
+        inputDescripcion.setAttribute("value", descripcion.textContent)
+        inputDescripcion.appendChild(salto);
+
+        padre.replaceChild(inputName, name);
+        padre.replaceChild(inputDescripcion, descripcion);
+
+    }
+</script>
 {% endblock %}

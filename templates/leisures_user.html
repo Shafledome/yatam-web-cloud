@@ -4,19 +4,142 @@
 <div class="columns">
     <div class="column is-8 is-offset-2">
         <div class="box">
-
+            <p class="title is-4 has-text-grey-darker">Search our User Leisures by name</p>
+            <input class="input is-primary" id="search" type="text" onchange="filter_name()" placeholder="Enter text to search">
+            <br><br>
         </div>
     </div>
 </div>
 <div class="columns">
     <div class="column is-8 is-offset-2">
-        <div class="box">
+        <div class="box" id="mainBox">
 
         </div>
     </div>
     <a href="/leisure/create" class="button is-danger is-large" id="add_button">Add New Leisure</a>
 </div>
 <script>
+    var fromIndex = 0;
+    var toIndex = 5;
+    var buscando = false;
+    var description = document.querySelector('input');
+    description.addEventListener('change', filter_name);
+
+    charge_new_leisures();
+
+    function charge_new_leisures() {
+        range = {from: fromIndex, to: toIndex};
+        toIndex += 5;
+        fetch(`${window.origin}/leisuresFromUsers`, {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify(range),
+            cache: 'no-cache',
+            headers: new Headers({
+                'content-type': 'application/json'
+            })
+        }).then((response) => {
+            if (response.status !== 200) {
+                console.log(`Response status was not 200: ${response.status}`);
+                return ;
+            }
+            response.json().then( (data) => {
+                render_cards(data);
+            })
+        })
+    }
+
+    function open_leisure(key) {
+        window.location.href = "/leisure/user?key="+key;
+    }
+
+    function render_cards(data) {
+        var box = document.getElementById('mainBox');
+        var loadMore = document.createElement('a');
+        var endOfSearch = document.createElement('p');
+
+        loadMore.onclick = () => {
+            charge_new_leisures();
+            loadMore.remove();
+        };
+        loadMore.className = "button is-large is-primary";
+        loadMore.innerHTML = "Load more leisures";
+
+        endOfSearch.innerText = "No leisures found with this name"
+
+        if (buscando)
+        {
+            box.innerHTML = '<progress class="progress is-danger" max="100">30%</progress>';
+        }
+
+        var finalHTML = '';
+
+        data.forEach(element => {
+            var string_html = `
+            <a onclick="open_leisure('${element.key}')">
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            <img src="${element.url_photo}"/>
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-48x48">
+                                    <img src="${element.user.profile_picture}">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4 has-text-grey-darker">${element.user.display_name}</p>
+                                <p class="subtitle is-6 has-text-grey">${element.user.email}</p>
+                            </div>
+                        </div>
+
+                        <div class="content">
+                            <p class="title is-4 has-text-grey-darker">${element.name}</p>
+                            ${element.description}
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <br><br>
+            `
+            finalHTML += string_html;
+        });
+        box.innerHTML = finalHTML;
+        if(!buscando)
+        {
+            box.appendChild(loadMore);
+        } else if (buscando && data.length == 0){
+            box.appendChild(endOfSearch);
+        }
+    }
+
+    function filter_name(e) {
+        name = e.target.value;
+        buscando = true;
+        if (name != "")
+        {
+            fetch(`${window.origin}/leisuresFromUsers/search`, {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify(name),
+                cache: 'no-cache',
+                headers: new Headers({
+                    'content-type': 'application/json'
+                })
+            }).then((response) => {
+                if (response.status !== 200) {
+                    console.log(`Response status was not 200: ${response.status}`);
+                    return ;
+                }
+                response.json().then( (data) => {
+                    render_cards(data);
+                })
+            })
+        }
+    }
 
 </script>
 <style>

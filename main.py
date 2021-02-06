@@ -137,9 +137,10 @@ def show_graffities():
         if request.method == 'POST':
             req = request.get_json()
             graffities = Graffiti.get_all()
-            return Response(response=json.dumps(graffities[req['from']: req['to']], default=lambda o: o.encode(), indent=4),
-                            status=200,
-                            mimetype=mimetype)
+            return Response(
+                response=json.dumps(graffities[req['from']: req['to']], default=lambda o: o.encode(), indent=4),
+                status=200,
+                mimetype=mimetype)
         else:
             return render_template('graffiti_list.html', title='YATAM - Graffities')
 
@@ -156,12 +157,32 @@ def search_graffities():
                         mimetype=mimetype)
 
 
-@app.route('/leisuresFromUsers', methods=['GET'])
+@app.route('/leisuresFromUsers', methods=['GET', 'POST'])
 def show_leisures_from_users():
     if 'current_user_uid' not in session:
         return redirect(url_for('start'))
     else:
-        return render_template('leisures_user.html', title='YATAM - Leisures From Users')
+        if request.method == 'POST':
+            req = request.get_json()
+            leisures = UserLeisure.get_all()
+            return Response(
+                response=json.dumps(leisures[req['from']: req['to']], default=lambda o: o.encode(), indent=4),
+                status=200,
+                mimetype=mimetype)
+        else:
+            return render_template('leisures_user.html', title='YATAM - Leisures From Users')
+
+
+@app.route('/leisuresFromUsers/search', methods=['POST'])
+def search_leisures_name():
+    if 'current_user_uid' not in session:
+        return redirect(url_for('start'))
+    else:
+        req = request.get_json()
+        leisures = UserLeisure.search_by_name(req)
+        return Response(response=json.dumps(leisures, default=lambda o: o.encode(), indent=4),
+                        status=200,
+                        mimetype=mimetype)
 
 
 @app.route('/leisure', methods=['GET'])
@@ -225,12 +246,19 @@ def like_increment():
     else:
         if request.method == 'POST':
             like_type = request.form['type']
-            key = request.form['key']
-            leisure_key = request.form['id']
-            leisure_type = request.form['leisure']
-            Like.like_increase_decrease(like_type, key, session.get('current_user_uid'))
-
-            return redirect('/leisure?id='+leisure_key+'&type='+leisure_type)
+            if like_type == 'RATING':
+                key = request.form['key']
+                leisure_key = request.form['id']
+                leisure_type = request.form['leisure']
+                Like.like_increase_decrease(like_type, key, session.get('current_user_uid'))
+                return redirect('/leisure?id=' + leisure_key + '&type=' + leisure_type)
+            elif like_type == 'USER':
+                key = request.form['key']
+                Like.like_increase_decrease(like_type, key, session.get('current_user_uid'))
+                return redirect('leisure/user?id=' + key)
+            elif like_type == 'GRAFFITI':
+                # todo
+                print('todo')
 
 
 @app.route('/leisure/create', methods=['GET', 'POST'])

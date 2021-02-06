@@ -4,6 +4,7 @@ import sys
 from entities.graffiti_entity import Graffiti
 from entities.rating_entity import Rating
 from entities.user_entity import User
+from entities.user_leisure_entity import UserLeisure
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import utils.db as db
@@ -51,8 +52,11 @@ class Like:
                 }
                 Graffiti.update_graffiti(key, data)
             elif like_type == 'USER':
-                # ToDo: leisures user
-                print('todo')
+                leisure = UserLeisure.get_by_key(key)
+                data = {
+                    'nlikes': leisure.n_likes - 1
+                }
+                UserLeisure.update_user_leisure(key, data)
             Like.delete_like(key, uid)
         else:
             Like.create_like(key, uid)
@@ -69,8 +73,11 @@ class Like:
                 }
                 Graffiti.update_graffiti(key, data)
             elif like_type == 'USER':
-                # ToDo: leisures user
-                print('todo')
+                leisure = UserLeisure.get_by_key(key)
+                data = {
+                    'nlikes': leisure.n_likes + 1
+                }
+                UserLeisure.update_user_leisure(key, data)
 
 
 if __name__ == '__main__':
