@@ -74,5 +74,5 @@ The web will be deployed in *localhost:5000*
 
 ## External APIs:
 * IMGUR
-* Weather API
+* Climacell APIv3
 * Leaflet 
