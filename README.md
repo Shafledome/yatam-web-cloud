@@ -73,6 +73,6 @@ If you are using **Linux**:
 The web will be deployed in *localhost:5000*
 
 ## External APIs:
-* IMGUR
-* Climacell APIv3
-* Leaflet 
+* IMGUR - Imagenes
+* Climacell APIv3 - Clima
+* Leaflet - Mapa
