@@ -1,24 +1,26 @@
 {% extends 'base.html'%}
 {% block content %}
-<div class="block"></div>
-<div class="columns">
-    <div class="column is-8 is-offset-2">
-        <div class="box">
-            <p class="title is-4 has-text-grey-darker">Search Events by name or description</p>
-            <div class="field is-grouped">
-              <p class="control is-expanded">
-                <input class="input" type="text" id="input" onchange="search_by_name_or_description(event)"  placeholder="Find an event">
-              </p>
+<div class="container is-fluid">
+    <div class="columns">
+        <div class="column is-8 is-offset-2">
+            <div class="box">
+                <p class="title is-4 has-text-grey-darker">Search Events by name or description</p>
+                <div class="field is-grouped">
+                  <p class="control is-expanded">
+                    <input class="input" type="text" id="input" onchange="search_by_name_or_description(event)"  placeholder="Find an event">
+                  </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="column is-8 is-offset-2">
-    <div class="box" id="mainBox">
-        <progress class="progress is-primary" max="100">30%</progress>
+    <div class="columns">
+        <div class="column is-8 is-offset-2">
+            <div class="box" id="mainBox">
+                <progress class="progress is-primary" max="100">30%</progress>
+            </div>
+            <a class="button is-danger is-large" id="top_button"onclick="top_function()">To the Top</a>
+        </div>
     </div>
-    <a class="button is-danger is-large" id="top_button"onclick="top_function()">To the Top</a>
 </div>
 
 <script>

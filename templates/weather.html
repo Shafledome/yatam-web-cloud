@@ -7,7 +7,7 @@
       <article class="media">
         <div class="media-left">
           <figure class="image is-128x128">
-            <img class="image1" src='static/clear.svg' alt="Image">
+            <img class="image1" src="{{ url_for('static', filename = w.weather_code+'.svg') }}" alt="Image">
           </figure>
         </div>
         <div class="media-content">
