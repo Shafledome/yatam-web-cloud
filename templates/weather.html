@@ -1,24 +1,24 @@
 {% extends 'base.html'%}
 {% block content %}
-<div class="block"></div>
-<div class="column is-8 is-offset-2">
-  <div class="box">
-    <article class="media">
-      <div class="media-left">
-        <figure class="image is-64x64">
-          <img class="image1" src='static/clear.svg' alt="Image">
-        </figure>
-      </div>
-      <div class="media-content">
-        <div class="content">
-          <p>
-            <strong>{{ w.temp }} ºC</strong> {{w.feels_like }} ºC
-            <br>
-            <small>{{ w.wind_speed }} m/s {{ w.humidity }} % {{ w.precipitation }} mm/hr</small>
-          </p>
+<div class="container is-fluid">
+  <div class="block"></div>
+  <div class="column is-8 is-offset-2">
+    <div class="box">
+      <article class="media">
+        <div class="media-left">
+          <figure class="image is-128x128">
+            <img class="image1" src='static/clear.svg' alt="Image">
+          </figure>
         </div>
-      </div>
-    </article>
+        <div class="media-content">
+          <div class="content">
+            <div class="title is-4 has-text-grey"><b class="has-text-grey-darker">Temperature:</b> {{ w.temp }} ºC</div>
+            <div class="title is-4 has-text-grey"><b class="has-text-grey-darker">Feels Like:</b> {{ w.feels_like }} ºC</div>
+            <div class="title is-6 has-text-grey">{{ w.wind_speed }} m/s {{ w.humidity }} % {{ w.precipitation }} mm/hr</div>
+          </div>
+        </div>
+      </article>
+    </div>
   </div>
 </div>
 
