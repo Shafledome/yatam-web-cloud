@@ -3,11 +3,11 @@
 <div class="container is-fluid">
     <div class="columns">
         <div class="column is-8 is-offset-2">
-            <div class="box">
+            <div class="box" id="primaryBox">
                 <p class="title is-4 has-text-grey-darker">Search Events by name or description</p>
                 <div class="field is-grouped">
                   <p class="control is-expanded">
-                    <input class="input" type="text" id="input" onchange="search_by_name_or_description(event)"  placeholder="Find an event">
+                    <input class="input" type="text" id="search" onchange="search_by_name_or_description(event)"  placeholder="Find an event">
                   </p>
                 </div>
             </div>
@@ -42,38 +42,59 @@
         document.documentElement.scrollTop = 0;
     }
 
-    function search_by_name_or_description(e) {
-        if (e !== undefined) {
-            input=e.target.value;
-            {
-                fetch(`${window.origin}/events/search`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    body: JSON.stringify(input),
-                    cache: 'no-cache',
-                    headers: new Headers({
-                        'content-type': 'application/json'
-                    })
-                }).then((response) => {
-                    if (response.status !== 200) {
-                        console.log(`Response status was not 200: ${response.status}`);
-                        return ;
-                    }
-                    response.json().then( (data) => {
-                        render_cards(data);
-                    })
-                })
+    var fromIndex = 0;
+    var toIndex = 5;
+
+    const e = new Event('build');
+
+    var description = document.querySelector('input');
+    description.addEventListener('change', search_by_name_or_description);
+
+    charge_new_events();
+
+    function charge_new_events() {
+        range = {from: fromIndex, to: toIndex};
+        toIndex += 5;
+        fetch(`${window.origin}/events`, {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify(range),
+            cache: 'no-cache',
+            headers: new Headers({
+                'content-type': 'application/json'
+            })
+        }).then((response) => {
+            if (response.status !== 200) {
+                console.log(`Response status was not 200: ${response.status}`);
+                return ;
             }
-        }
+            response.json().then( (data) => {
+                render_cards(data, true);
+            })
+        })
     }
 
     function open_event(id) {
         window.location.href = "/event?id="+id;
     }
 
-    function render_cards(data) {
+    function render_cards(data, typeRender) {
         var box = document.getElementById('mainBox');
+        var loadMore = document.createElement('a');
+        var endOfSearch = document.createElement('p');
+
         box.innerHTML = '<progress class="progress is-danger" max="100">30%</progress>';
+
+        loadMore.onclick = () => {
+            charge_new_events();
+            loadMore.remove();
+        };
+        loadMore.className = "button is-large is-primary";
+        loadMore.innerHTML = "Load more events";
+        endOfSearch.className = "title is-4 has-text-danger";
+
+        endOfSearch.innerText = "No events with this description";
+
         var finalHTML = '';
 
         data.forEach(element => {
@@ -121,6 +142,42 @@
             finalHTML += string_html;
         });
         box.innerHTML = finalHTML;
+
+        if (typeRender) { // True is charge_new, false es filter
+            box.appendChild(loadMore);
+        } else if (!typeRender && data.length == 0) {
+            box.appendChild(endOfSearch);
+        }
+    }
+
+    function search_by_name_or_description(e) {
+        name = e.target.value;
+        if (name != "") {
+            fetch(`${window.origin}/events/search`, {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify(name),
+                cache: 'no-cache',
+                headers: new Headers({
+                    'content-type': 'application/json'
+                })
+            }).then((response) => {
+                if (response.status !== 200) {
+                    console.log(`Response status was not 200: ${response.status}`);
+                    return;
+                }
+                response.json().then((data) => {
+                    render_cards(data, false);
+                })
+            })
+        } else {
+            var box = document.getElementById('mainBox');
+            box.innerHTML = '<progress class="progress is-primary" max="100">30%</progress>';
+
+            fromIndex = 0;
+            toIndex = 5;
+            charge_new_events();
+        }
     }
 
 </script>

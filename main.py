@@ -345,12 +345,20 @@ def show_leisure_user():
         return render_template('leisure_user.html', leisure=leisure, title='YATAM - View Leisure')
 
 
-@app.route('/events', methods=['GET'])
+@app.route('/events', methods=['GET', 'POST'])
 def show_events():
     if 'current_user_uid' not in session:
         return redirect(url_for('start'))
     else:
-        return render_template('events.html', title='YATAM - Events 2020')
+        if request.method == 'POST':
+            req = request.get_json()
+            events = Event.get_all()
+            return Response(
+                response=json.dumps(events[req['from']: req['to']], default=lambda o: o.encode(), indent=4),
+                status=200,
+                mimetype=mimetype)
+        else:
+            return render_template('events.html', title='YATAM - Events 2020')
 
 
 @app.route('/leisure/user/delete', methods=['POST'])
